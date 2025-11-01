@@ -15,9 +15,10 @@
       --text:#000;
       --accent:  #ff4d6d;
       --muted: #e63950;
-      --card: rgba(255,255,255,0.04);
-      --glass: rgba(255,255,255,0.03);
-
+--card: rgba(255,255,255,0.04);
+--glass: rgba(255,255,255,0.03);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255,255,255,0.1);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -98,6 +99,8 @@
     /* Left column: controls + output */
     .panel {
       background:var(--card);
+     backdrop-filter: blur(10px);
+     border: 1px solid rgba(255,255,255,0.1);
       padding:16px;
       border-radius:12px;
       backface-visibility:hidden;
