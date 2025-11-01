@@ -17,6 +17,7 @@
       --muted: #e63950;
       --card: rgba(255,255,255,0.04);
       --glass: rgba(255,255,255,0.03);
+
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -108,7 +109,8 @@
     select, textarea, input[type="range"] {
       width:100%;
       border-radius:10px;
-      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
       background:transparent;
       color: var(--text);
       padding:10px;
@@ -174,6 +176,8 @@
     /* History (right column) */
     .history {
       background:var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
       padding:12px;
       border-radius:12px;
       max-height:560px;
