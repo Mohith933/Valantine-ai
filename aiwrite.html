@@ -113,7 +113,7 @@ border: 1px solid rgba(255,255,255,0.1);
       width:100%;
       border-radius:10px;
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255, 77, 109, 0.2);
       background:transparent;
       color: var(--text);
       padding:10px;
@@ -159,6 +159,7 @@ border: 1px solid rgba(255,255,255,0.1);
     .output {
       margin-top:14px;
       background: var(--glass);
+      border: 1px solid rgba(255, 77, 109, 0.2);
       padding:14px;
       border-radius:10px;
       min-height:140px;
@@ -528,7 +529,7 @@ document.head.appendChild(style);
         arr.forEach((it, idx) => {
           const div = document.createElement("div");
           div.className = "hist-item";
-          div.innerHTML = `<div style="flex:1"><strong style="display:block">${it.mode.toUpperCase()}</strong><div style="font-size:0.9rem;color:#ffdfe6;margin-top:6px">${it.preview}</div></div>
+          div.innerHTML = `<div style="flex:1"><strong style="display:block">${it.mode.toUpperCase()}</strong><div style="font-size:0.9rem;color:var(--text);margin-top:6px">${it.preview}</div></div>
                            <div style="min-width:72px;display:flex;flex-direction:column;gap:6px">
                              <button class="ghost" data-idx="${idx}" data-action="open">Open</button>
                              <button class="ghost" data-idx="${idx}" data-action="delete">Delete</button>
