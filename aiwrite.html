@@ -271,7 +271,11 @@ body.dark {
   <option value="journal">Journal</option>
   <option value="note">Note</option>
   <option value="affirmation">Affirmation</option>
-</select>  
+  <option value="poem">Poem</option>
+  <option value="story">Story</option>
+  <option value="letter">Letter</option>
+  <option value="quote">Quote</option>
+</select>
         </div>  
   
         <label for="prompt" style="margin-top:12px">Prompt (topic / few words)</label>  
@@ -408,8 +412,8 @@ function generateContent(prompt, mode, emotion) {
 
   const topic = prompt || "today";
 
-  // 🌅 Reflection (short thoughtful writing)
-  if (mode === "poem" || mode === "reflection") {
+  // 🌅 Reflection
+  if (mode === "reflection") {
     const line1 = tone(
       `Sometimes I pause and notice ${topic}, just breathing quietly.`,
       `Thinking of ${topic}, I realize how simple moments shape the day.`,
@@ -423,8 +427,8 @@ function generateContent(prompt, mode, emotion) {
     return `<h2>🌤️ Reflection</h2><p>${line1}<br>${line2}</p>`;
   }
 
-  // 📖 Journal (short diary)
-  if (mode === "letter" || mode === "journal") {
+  // 📔 Journal
+  if (mode === "journal") {
     const start = tone(
       `It was a quiet day — ${topic} stayed on my mind.`,
       `Today, ${topic} made me think about how I’m growing.`,
@@ -438,8 +442,8 @@ function generateContent(prompt, mode, emotion) {
     return `<h2>📔 Journal</h2><pre>${start}\n\n${end}</pre>`;
   }
 
-  // 💬 Note (small message)
-  if (mode === "quote" || mode === "note") {
+  // 💬 Note
+  if (mode === "note") {
     const msg = tone(
       `Breathe — you’re already doing enough.`,
       `Progress isn’t loud. Keep going quietly, it matters.`,
@@ -449,7 +453,7 @@ function generateContent(prompt, mode, emotion) {
   }
 
   // 🌿 Affirmation
-  if (mode === "resume" || mode === "affirmation") {
+  if (mode === "affirmation") {
     const line = tone(
       `I’m learning to trust myself, even when I feel unsure.`,
       `I can create something good each day, no matter how small.`,
@@ -458,7 +462,63 @@ function generateContent(prompt, mode, emotion) {
     return `<h2>🌿 Affirmation</h2><p>${line}</p>`;
   }
 
-  return `<p>💭 Try writing a few words like "a quiet morning" or "after exam" to start reflecting.</p>`;
+  // ✉️ Letter
+  if (mode === "letter") {
+    const opening = tone(
+      `Dear friend, I’ve been thinking about ${topic} today.`,
+      `My heart feels lighter when I write to you about ${topic}.`,
+      `There’s something deeply honest about sharing thoughts of ${topic} with you.`
+    );
+    const closing = tone(
+      `Yours truly,`,
+      `Warm regards,`,
+      `With love and gratitude,`
+    );
+    return `<h2>✉️ Letter</h2><pre>${opening}\n\n${closing}</pre>`;
+  }
+
+  // 📝 Poem
+  if (mode === "poem") {
+    const verse1 = tone(
+      `${topic} drifts softly through my mind, like a quiet breeze.`,
+      `In the rhythm of ${topic}, my heart finds a calm melody.`,
+      `${topic} becomes a whisper of light and memory intertwined.`
+    );
+    const verse2 = tone(
+      `Maybe beauty hides in small pauses of time.`,
+      `Every feeling in ${topic} writes its own rhyme.`,
+      `I let the silence between words speak what I can’t define.`
+    );
+    return `<h2>📝 Poem</h2><p>${verse1}<br>${verse2}</p>`;
+  }
+
+  // 📚 Story
+  if (mode === "story") {
+    const start = tone(
+      `Once upon a time, there was someone who dreamed about ${topic}.`,
+      `${topic} began as a small thought, growing with every heartbeat.`,
+      `Long ago, a journey started with just one idea — ${topic}.`
+    );
+    const end = tone(
+      `And maybe that dream still continues, quietly waiting for its moment.`,
+      `Even today, the story of ${topic} reminds us that courage begins small.`,
+      `And so, ${topic} became more than a story — it became hope itself.`
+    );
+    return `<h2>📚 Story</h2><p>${start}<br><br>${end}</p>`;
+  }
+
+  // 💖 Quote
+  if (mode === "quote") {
+    const quote = tone(
+      `${topic} teaches us that peace starts within.`,
+      `When we hold onto ${topic}, we find meaning in small moments.`,
+      `${topic} reminds us that love and strength often sound the same.`
+    );
+    return `<h2>💖 Quote</h2><p>“${quote}”</p>`;
+  }
+
+  // Default prompt
+  return `<p>💭 Try typing a few words like "a quiet morning" or "love story" to start writing.</p>`;
 }
   
       // Generate button handler  
