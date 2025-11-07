@@ -482,7 +482,7 @@ function generateContent(prompt, mode, emotion) {
       `With profound love and commitment,`
     );
 
-    return `<h2>✉️ Letter (9/10 Quality)</h2><pre>${salutation}\n\n${body}\n\n${closing}</pre>`;
+    return `<h2>✉️ Letter</h2><pre>${salutation}\n\n${body}\n\n${closing}</pre>`;
   }
 
   // --- 📝 Poem Mode (Focus: Imagery, Structure, and Sophisticated Vocabulary) ---
@@ -499,7 +499,7 @@ function generateContent(prompt, mode, emotion) {
     );
     
     // Use line breaks for poetic structure
-    return `<h2>📝 Poem (9/10 Quality)</h2><p>${verse1}<br>${verse2}</p>`;
+    return `<h2>📝 Poem</h2><p>${verse1}<br>${verse2}</p>`;
   }
 
   // --- 📚 Story Mode (Focus: Narrative Arc, Character, and Specific Detail) ---
@@ -515,7 +515,7 @@ function generateContent(prompt, mode, emotion) {
       `And so, the profound search concluded, making the concept of **${topic}** a lasting testament to enduring human will.`
     );
     
-    return `<h2>📚 Story (9/10 Quality)</h2><p>${opening}<br><br>${climax}</p>`;
+    return `<h2>📚 Story</h2><p>${opening}<br><br>${climax}</p>`;
   }
 
   // --- 💖 Quote Mode (Focus: Aphoristic Wisdom, Impact, and Clarity) ---
@@ -525,7 +525,7 @@ function generateContent(prompt, mode, emotion) {
       `True alignment begins when we realize that **${topic}** is not a destination, but the compass itself.`,
       `To truly understand the depth of human connection, one must first confront the powerful truth of **${topic}**.`,
     );
-    return `<h2>💖 Quote (9/10 Quality)</h2><p>“${quote}”</p>`;
+    return `<h2>💖 Quote</h2><p>“${quote}”</p>`;
   }
 
   // Default prompt
