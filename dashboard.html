@@ -336,36 +336,41 @@
       navigator.clipboard.writeText(text);
       alert("Copied to clipboard 💗");
     }
-  const searchInput = document.getElementById('searchInput');
-  const toolList = document.getElementById('toolList');
-  const tools = toolList.querySelectorAll('.tool-item');
+  document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("searchInput");
+  const toolList = document.getElementById("toolList");
+
+  if (!searchInput || !toolList) return; // safety check
+
+  const tools = toolList.querySelectorAll(".tool-item");
 
   // Hide tool list initially
-  toolList.style.display = 'none';
+  toolList.style.display = "none";
 
-  searchInput.addEventListener('input', () => {
+  searchInput.addEventListener("input", () => {
     const query = searchInput.value.toLowerCase().trim();
 
-    if (query === '') {
-      toolList.style.display = 'none';
+    if (query === "") {
+      toolList.style.display = "none";
       return;
     }
 
     let matchFound = false;
 
-    tools.forEach(tool => {
+    tools.forEach((tool) => {
       const text = tool.textContent.toLowerCase();
       if (text.includes(query)) {
-        tool.style.display = 'block';
+        tool.style.display = "block";
         matchFound = true;
       } else {
-        tool.style.display = 'none';
+        tool.style.display = "none";
       }
     });
 
     // Show or hide tool list based on matches
-    toolList.style.display = matchFound ? 'grid' : 'none';
+    toolList.style.display = matchFound ? "grid" : "none";
   });
+});
   </script>
 </body>
 </html>
