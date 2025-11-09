@@ -6,6 +6,8 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>HeartNote AI — Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --accent: #ff4d6d;
@@ -90,6 +92,46 @@
       width:100%;margin-bottom:14px;padding:12px;border-radius:10px;
       border:1px solid rgba(0,0,0,0.1);background:var(--muted);color:var(--text);
     }
+    .handwriting {
+  font-family: 'Caveat', cursive;
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 0; }
+  25%, 75% { opacity: 1; }
+}
+    .recents {
+  margin-top: 20px;
+  background: #fff5f7;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.recents h3 {
+  color: #d14f6d;
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+}
+.recents ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.recents li {
+  background: white;
+  margin-top: 8px;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.recents li:hover {
+  background: #ffe6eb;
+}
+
+
     .form-section button{background:var(--accent);color:#fff;padding:12px 18px;border-radius:10px;border:none;font-weight:600;cursor:pointer;}
     .form-section button:hover{background:var(--accent-dark);}
     .playground-section h3{color:var(--accent);margin-bottom:10px;}
@@ -185,6 +227,12 @@
         <button class="copy-btn" onclick="copyText()">Copy</button>
       </h3>
       <div id="output" class="output">Your writing will appear here...</div>
+      <!-- Recents Section -->
+<div id="recentsSection" class="recents">
+  <h3>🕒 Recent Writings</h3>
+  <ul id="recentsList"></ul>
+</div>
+
     </div>
   </div>
 </div>
@@ -193,51 +241,235 @@
     <footer>© 2025 HeartNote AI — Designed with 💗 by Solulure Labs</footer>
   </main>
 
-  <script>
-    const username = localStorage.getItem('heartnote_username');
-    if (username) {
-      document.getElementById('welcomeText').innerText = `Welcome, ${username} 💞`;
+ <script>
+  // --- Keep username logic ---
+  const username = localStorage.getItem('heartnote_username');
+  if (username) {
+    document.getElementById('welcomeText').innerText = `Welcome, ${username} 💞`;
+  }
+
+  // --- Copy button function ---
+  function copyText() {
+    const output = document.getElementById("output").innerText;
+    navigator.clipboard.writeText(output);
+    alert("Copied to clipboard 💗");
+  }
+
+  // --- Navigation ---
+  function openTool(name){
+    document.getElementById('libraryView').style.display = 'none';
+    document.getElementById('workspaceView').classList.add('active');
+    document.getElementById('toolTitle').innerText = name;
+    document.getElementById('output').innerText = "Your writing will appear here...";
+  }
+
+  function goBack(){
+    document.getElementById('workspaceView').classList.remove('active');
+    document.getElementById('libraryView').style.display = 'block';
+  }
+
+  // --- Write effect (typewriter handwriting) ---
+  async function writeEffect(html, speed = 10) {
+    const outputEl = document.getElementById("output");
+    const lenInfo = { textContent: '' }; // dummy placeholder
+    const tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    const text = tmp.innerText;
+    outputEl.innerHTML = "";
+
+    let i = 0;
+    const cursor = document.createElement("span");
+    cursor.textContent = "|";
+    cursor.style.animation = "blink 1s infinite";
+    cursor.style.opacity = "0.8";
+    cursor.style.color = "#ffbad2";
+    outputEl.appendChild(cursor);
+    outputEl.classList.add("handwriting");
+
+    while (i < text.length) {
+      outputEl.insertBefore(document.createTextNode(text[i]), cursor);
+      i++;
+      if (i % 3 === 0) await new Promise(r => setTimeout(r, speed * 0.8));
+      outputEl.scrollIntoView({ behavior: "smooth", block: "end" });
     }
 
-    function openTool(name) {
-      if (name === 'Dashboard') {
-        document.getElementById('workspaceView').classList.remove('active');
-        document.getElementById('libraryView').style.display = 'block';
-        document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
-        event.target.classList.add('active');
-        return;
-      }
+    cursor.remove();
+    outputEl.innerHTML = html; // restore formatted HTML
+  }
 
-      document.getElementById('libraryView').style.display = 'none';
-      document.getElementById('workspaceView').classList.add('active');
-      document.getElementById('toolTitle').innerText = name;
-      document.getElementById('output').innerText = "Your writing will appear here...";
-      document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
-      event.target.classList.add('active');
+  // --- Content generator function from HeartNote AI ---
+  function generateContent(){
+    const prompt = document.getElementById('nameInput').value || 'someone special';
+    const desc = document.getElementById('descInput').value || 'your emotions';
+    const depth = document.getElementById('depthInput').value;
+    const toolTitle = document.getElementById('toolTitle').innerText;
+
+    // determine mode based on the tool title (simplified mapping)
+    const modeMap = {
+      "Reflection": "reflection",
+      "Journal": "journal",
+      "Notes": "note",
+      "Affirmation": "affirmation",
+      "Letters": "letter",
+      "Poems": "poem",
+      "Story": "story",
+      "Quotes": "quote"
+    };
+
+    const mode = modeMap[toolTitle.split(' ')[0]] || "reflection";
+
+    const html = generateWriting(desc, mode, depth);
+    writeEffect(html);
+  }
+
+  // --- HeartNote AI Writing Logic ---
+  function generateWriting(prompt, mode, emotion){
+    emotion = emotion || "Medium";
+
+    function clamp(num, min, max){ return Math.min(Math.max(num, min), max); }
+    const mood = (emotion === "Light" ? 20 : emotion === "Medium" ? 60 : 90);
+    const intensity = mood / 100;
+
+    function tone(soft, balanced, deep){
+      if (intensity < 0.3) return soft;
+      if (intensity < 0.6) return balanced;
+      return deep;
     }
 
-    function goBack() {
-      document.getElementById('workspaceView').classList.remove('active');
-      document.getElementById('libraryView').style.display = 'block';
-      document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
-      document.querySelector('.menu a').classList.add('active'); // dashboard active
+    const topic = prompt || "today";
+
+    if (mode === "reflection"){
+      const opening = tone(
+        `I'm pausing to let the weight of **${topic}** settle gently.`,
+        `Thinking deeply about **${topic}**, I realize how much energy goes into resisting what is.`,
+        `In the quiet echo of **${topic}**, I find a profound lesson.`
+      );
+      const closing = tone(
+        `Maybe the goal isn’t speed, but simply being present in the moment.`,
+        `Maybe true calm isn’t the absence of chaos—it’s seeing clearly through it.`,
+        `Even in the greatest chaos, the deepest part of my intention stays gentle and true.`
+      );
+      return `<h2>🌤️ Reflection</h2><pre>${opening}\n\n${closing}</pre>`;
     }
 
-    function generateContent() {
-      const name = document.getElementById('nameInput').value || 'someone special';
-      const desc = document.getElementById('descInput').value || 'your emotions';
-      const depth = document.getElementById('depthInput').value;
-      const title = document.getElementById('toolTitle').innerText;
-
-      const message = `Dear ${name},\n\nThis is a ${depth.toLowerCase()} piece written using the ${title} tool. It beautifully captures ${desc}.\n\nWith warmth,\n💗 HeartNote AI`;
-      document.getElementById('output').innerText = message;
+    if (mode === "journal"){
+      const entryDate = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+      const start = tone(
+        `Date: ${entryDate}\n\nIt was a challenging day. **${topic}** stayed on my mind.`,
+        `Date: ${entryDate}\n\nToday, **${topic}** brought up some complex feelings.`,
+        `Date: ${entryDate}\n\nThis entry is about **${topic}** and what it teaches me.`
+      );
+      return `<h2>📔 Journal</h2><pre>${start}</pre>`;
     }
 
-    function copyText() {
-      const text = document.getElementById('output').innerText;
-      navigator.clipboard.writeText(text);
-      alert("Copied to clipboard 💗");
+    if (mode === "affirmation"){
+      const line = tone(
+        `I'm learning to trust myself with the discomfort of **${topic}**.`,
+        `I can create something good each day around **${topic}**.`,
+        `I am stronger than I think. Even **${topic}** cannot dim my light.`
+      );
+      return `<h2>🌿 Affirmation</h2><p>${line}</p>`;
     }
-  </script>
+
+    if (mode === "poem"){
+      const verse1 = tone(
+        `When **${topic}** starts to whisper near,`,
+        `In the rhythm where **${topic}** hides,`,
+        `The memory of **${topic}** softly collides.`
+      );
+      return `<h2>🪶 Poem</h2><p>${verse1}</p>`;
+    }
+
+    if (mode === "letter"){
+      const salutation = tone(
+        `Dear Friend,`,
+        `To someone who matters deeply,`,
+        `My Dearest,`
+      );
+      const body = tone(
+        `I've been thinking about **${topic}** and wanted to reach out with kindness.`,
+        `**${topic}** reminded me how much our bond matters.`,
+        `Even in silence, **${topic}** holds the weight of what my heart wants to say.`
+      );
+      const closing = tone(
+        `Yours truly,`,
+        `With care,`,
+        `Forever,`
+      );
+      return `<h2>💌 Letter</h2><pre>${salutation}\n\n${body}\n\n${closing}</pre>`;
+    }
+
+    if (mode === "note"){
+      const msg = tone(
+        `Breathe. You have handled **${topic}** with grace.`,
+        `Keep going quietly with **${topic}**, your effort matters.`,
+        `You are strong beyond measure, especially facing **${topic}**.`
+      );
+      return `<h2>💬 Note</h2><p>${msg}</p>`;
+    }
+
+    if (mode === "story"){
+      const intro = tone(
+        `It began with **${topic}**, a spark that changed everything.`,
+        `The story of **${topic}** is one of courage and growth.`,
+        `**${topic}** became the legend whispered across time.`
+      );
+      return `<h2>✨ Story</h2><p>${intro}</p>`;
+    }
+
+    if (mode === "quote"){
+      const quote = tone(
+        `The quiet strength of **${topic}** is in the small steps.`,
+        `True alignment begins when we embrace **${topic}**.`,
+        `To understand love, one must first face **${topic}**.`
+      );
+      return `<h2>💭 Quote</h2><p>“${quote}”</p>`;
+    }
+
+    return `<p>💭 Try typing a few words like "a quiet morning" or "love story" to start writing.</p>`;
+  }
+   // 🕒 --- Local Storage Save + Load System ---
+function saveRecent(title, content) {
+  const recents = JSON.parse(localStorage.getItem("HeartNote_Recents")) || [];
+  const entry = {
+    title: title || "Untitled",
+    content,
+    date: new Date().toLocaleString()
+  };
+  
+  // keep latest 10 only
+  recents.unshift(entry);
+  if (recents.length > 10) recents.pop();
+  
+  localStorage.setItem("HeartNote_Recents", JSON.stringify(recents));
+  renderRecents();
+}
+
+function renderRecents() {
+  const recents = JSON.parse(localStorage.getItem("HeartNote_Recents")) || [];
+  const list = document.getElementById("recentsList");
+  list.innerHTML = "";
+  recents.forEach((r, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<b>${r.title}</b><br><small>${r.date}</small>`;
+    li.onclick = () => loadRecent(i);
+    list.appendChild(li);
+  });
+}
+
+function loadRecent(index) {
+  const recents = JSON.parse(localStorage.getItem("HeartNote_Recents")) || [];
+  const selected = recents[index];
+  if (selected) {
+    document.getElementById("output").innerHTML = selected.content;
+    alert(`Loaded: ${selected.title}`);
+  }
+}
+
+// Call on page load
+window.addEventListener("DOMContentLoaded", renderRecents);
+
+</script>
+
 </body>
 </html>
