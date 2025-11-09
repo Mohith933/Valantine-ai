@@ -217,7 +217,7 @@
   <!-- Main -->
   <main class="main">
     <div class="topbar">
-      <h1>Welcome Back, Reynold! 👋</h1>
+      <h1 id="welcomeText">Welcome!</h1>
       <div class="toggle-buttons">
         <button class="active">Text</button>
       </div>
@@ -250,6 +250,9 @@
   </main>
 
   <script>
+    const username = localStorage.getItem('heartnote_username');
+    document.getElementById('welcomeText').innerText = username
+      ? `Welcome, ${username} 💞`;
     const buttons = document.querySelectorAll('.toggle-buttons button');
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
