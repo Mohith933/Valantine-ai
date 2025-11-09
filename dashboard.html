@@ -147,7 +147,7 @@
       outline: none;
     }
 
-    /* Section Title */
+    /* Cards View */
     .section-title {
       font-size: 1.3rem;
       color: var(--accent);
@@ -155,7 +155,6 @@
       margin-bottom: 18px;
     }
 
-    /* Cards Grid */
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
@@ -168,6 +167,7 @@
       border-radius: 16px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
       transition: transform .2s ease;
+      cursor: pointer;
     }
 
     .card:hover { transform: translateY(-4px); }
@@ -187,6 +187,80 @@
     .card p {
       font-size: 0.9rem;
       opacity: 0.85;
+    }
+
+    /* ===== Workspace (Form + Playground) ===== */
+    .workspace {
+      display: none;
+      animation: fadeIn .3s ease;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .workspace.active { display: block; }
+
+    .form-container {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .form-section, .playground-section {
+      background: var(--card);
+      padding: 24px;
+      border-radius: 14px;
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .form-section h3 {
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .form-section input, .form-section textarea, .form-section select {
+      width: 100%;
+      margin-bottom: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: var(--muted);
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    .form-section button {
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .form-section button:hover { background: var(--accent-dark); }
+
+    .playground-section h3 { color: var(--accent); margin-bottom: 10px; }
+    .output { 
+      font-family: 'Patrick Hand', cursive;
+      white-space: pre-wrap;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text);
+      padding-top: 10px;
+    }
+
+    .back-btn {
+      background: none;
+      color: var(--accent);
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-bottom: 15px;
     }
 
     footer {
@@ -209,7 +283,17 @@
   <aside class="sidebar">
     <div>
       <div class="logo">💞 HeartNote AI</div>
-     <nav class="menu"> <a href="#" class="active">🏠 Dashboard</a> <a href="#">🌿 Reflection</a> <a href="#">📖 Journal</a> <a href="#">🌈 Affirmation</a> <a href="#">📝 Notes</a> <a href="#">💌 Letters</a> <a href="#">🪶 Poems</a> <a href="#">✨ Story</a> <a href="#">💭 Quotes</a> </nav>
+      <nav class="menu">
+        <a href="#" class="active">🏠 Dashboard</a>
+        <a href="#" >🌿 Reflection</a>
+        <a href="#">📖 Journal</a>
+        <a href="#">🌈 Affirmation</a>
+        <a href="#">📝 Notes</a>
+        <a href="#">💌 Letters</a>
+        <a href="#">🪶 Poems</a>
+        <a href="#">✨ Story</a>
+        <a href="#">💭 Quotes</a>
+      </nav>
     </div>
     <button class="upgrade-btn">Upgrade to Pro 💗</button>
   </aside>
@@ -227,22 +311,47 @@
       <input type="text" placeholder="Search HeartNote tools or emotions..." />
     </div>
 
-    <div class="section-title">Popular Tools</div>
-    <div class="cards">
-      <div class="card">
-        <div class="card-icon">🪶</div>
-        <h3>AI Writer</h3>
-        <p>Create beautiful, emotion-filled writings for personal or social sharing.</p>
+    <!-- Library -->
+    <div id="libraryView">
+      <div class="section-title">Popular Tools</div>
+      <div class="cards">
+        <div class="card" onclick="openTool('Love Letter Maker')">
+          <div class="card-icon">💌</div>
+          <h3>Love Letter Maker</h3>
+          <p>Express heartfelt feelings through poetic letters.</p>
+        </div>
+        <div class="card" onclick="openTool('Affirmation Creator')">
+          <div class="card-icon">🌈</div>
+          <h3>Affirmation Creator</h3>
+          <p>Create uplifting affirmations to brighten your day.</p>
+        </div>
+        <div class="card" onclick="openTool('Mood Journal')">
+          <div class="card-icon">📔</div>
+          <h3>Mood Journal</h3>
+          <p>Reflect and write about your emotions daily.</p>
+        </div>
       </div>
-      <div class="card">
-        <div class="card-icon">💌</div>
-        <h3>Love Letter Maker</h3>
-        <p>Express heartfelt feelings through poetic and genuine AI-crafted letters.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon">🌸</div>
-        <h3>Mood Journal</h3>
-        <p>Reflect daily emotions with guided writing and gentle self-discovery.</p>
+    </div>
+
+    <!-- Tool Workspace -->
+    <div id="workspaceView" class="workspace">
+      <button class="back-btn" onclick="goBack()">← Back to Tools</button>
+      <div class="form-container">
+        <div class="form-section">
+          <h3 id="toolTitle">Tool Name</h3>
+          <input type="text" id="nameInput" placeholder="Recipient or topic...">
+          <textarea id="descInput" rows="4" placeholder="Write what you feel..."></textarea>
+          <select id="depthInput">
+            <option>Light</option>
+            <option>Medium</option>
+            <option>Deep</option>
+          </select>
+          <button onclick="generateContent()">Generate Content</button>
+        </div>
+        <div class="playground-section">
+          <h3>🖋️ Playground</h3>
+          <div id="output" class="output">Your writing will appear here...</div>
+        </div>
       </div>
     </div>
 
@@ -251,15 +360,31 @@
 
   <script>
     const username = localStorage.getItem('heartnote_username');
-    document.getElementById('welcomeText').innerText = username
-      ? `Welcome, ${username} 💞`;
-    const buttons = document.querySelectorAll('.toggle-buttons button');
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
+    if (username) {
+      document.getElementById('welcomeText').innerText = `Welcome, ${username} 💞`;
+    }
+
+    function openTool(name){
+      document.getElementById('libraryView').style.display = 'none';
+      document.getElementById('workspaceView').classList.add('active');
+      document.getElementById('toolTitle').innerText = name;
+      document.getElementById('output').innerText = "Your writing will appear here...";
+    }
+
+    function goBack(){
+      document.getElementById('workspaceView').classList.remove('active');
+      document.getElementById('libraryView').style.display = 'block';
+    }
+
+    function generateContent(){
+      const name = document.getElementById('nameInput').value || 'someone special';
+      const desc = document.getElementById('descInput').value || 'your emotions';
+      const depth = document.getElementById('depthInput').value;
+      const title = document.getElementById('toolTitle').innerText;
+
+      const message = `Dear ${name},\n\nThis is a ${depth.toLowerCase()} piece written with ${title}. It beautifully captures ${desc}.\n\nWith warmth,\n💗 HeartNote AI`;
+      document.getElementById('output').innerText = message;
+    }
   </script>
 </body>
 </html>
