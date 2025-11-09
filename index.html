@@ -82,6 +82,29 @@
       transform: scale(1.05);
     }
 
+    .modal {
+      display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+      width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+      justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: var(--card); padding: 30px; border-radius: 16px; width: 90%; max-width: 400px;
+      text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .modal-content h2 {color: var(--accent); margin-bottom: 20px;}
+    .modal-content input {
+      width: 100%; padding: 10px; margin: 8px 0;
+      border: 1px solid #ccc; border-radius: 8px;
+    }
+    .modal-content button {
+      background: var(--accent); color: #fff; border: none; padding: 10px 20px;
+      border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 10px;
+    }
+    .close {
+      position: absolute; top: 20px; right: 25px; color: #fff;
+      font-size: 28px; cursor: pointer; font-weight: bold;
+    }
+
     /* Hero Section */
     .hero {
       text-align: center;
@@ -225,7 +248,7 @@
     <div class="logo">💞 HeartNote AI</div>
     <button class="cta-btn">Sign Up</button>
   </header>
-
+  
   <section class="hero" id="home">
     <h1>HeartNote AI — Creative Writer</h1>
     <p>HeartNote helps you express your real-life emotions and thoughts — from personal writings to social stories and lifestyle reflections.</p>
@@ -274,5 +297,40 @@
     <small>© 2025 HeartNote AI. All rights reserved.</small>
   </footer>
 
+  <!-- Signup Modal -->
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h2>Create Account</h2>
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button id="submitSignup">Sign Up</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('signupModal');
+    const openBtn = document.getElementById('openSignup');
+    const closeBtn = document.getElementById('closeModal');
+    const submitBtn = document.getElementById('submitSignup');
+
+    openBtn.onclick = () => modal.style.display = 'flex';
+    closeBtn.onclick = () => modal.style.display = 'none';
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+
+    submitBtn.onclick = () => {
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (username && email && password) {
+        localStorage.setItem('heartnote_username', username);
+        window.location.href = 'dashboard.html';
+      } else {
+        alert('Please fill all fields before continuing.');
+      }
+    };
+  </script>
 </body>
 </html>
