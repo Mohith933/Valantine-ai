@@ -258,7 +258,7 @@
   <button class="back-btn" onclick="goBack()">← Back to Tools</button>
   <div class="form-container">
     <div class="form-section">
-      <h3 id="toolTitle">Tool Name</h3>
+      <h3 id="toolTitle">HeartNote Mode</h3>
 
       <label for="nameInput">💗 Recipient or Topic</label>
       <input type="text" id="nameInput" placeholder="Enter recipient or topic...">
@@ -268,9 +268,9 @@
 
       <label for="depthInput">🌊 Depth of Emotion</label>
       <select id="depthInput">
-        <option>Light</option>
-        <option>Medium</option>
-        <option>Deep</option>
+        <option value="light">Light</option>
+        <option value="medium">Medium</option>
+        <option value="deep">Deep</option>
       </select>
 
       <button onclick="generateContent()">Generate Content</button>
@@ -278,13 +278,12 @@
 
     <div class="playground-section">
       <div class="playground-header">
-  <h3>🖋️ Playground</h3>
-  <button class="copy-btn" onclick="copyText()">📋 Copy</button>
-</div>
+        <h3>🖋️ Playground</h3>
+        <button class="copy-btn" onclick="copyText()">📋 Copy</button>
+      </div>
       <div id="output" class="output">Your writing will appear here...</div>
     </div>
   </div>
-</div>
 
 
     <footer>© 2025 HeartNote AI — Designed with 💗 by Solulure Labs</footer>
@@ -320,21 +319,101 @@
       document.querySelector('.menu a').classList.add('active'); // dashboard active
     }
 
-    function generateContent() {
-      const name = document.getElementById('nameInput').value || 'someone special';
-      const desc = document.getElementById('descInput').value || 'your emotions';
-      const depth = document.getElementById('depthInput').value;
-      const title = document.getElementById('toolTitle').innerText;
+   function generateContent() {
+  const name = document.getElementById('nameInput').value || 'someone special';
+  const desc = document.getElementById('descInput').value || 'your emotions';
+  const depth = document.getElementById('depthInput').value.toLowerCase();
+  const title = document.getElementById('toolTitle').innerText.toLowerCase();
+  const output = document.getElementById('output');
 
-      const message = `Dear ${name},\n\nThis is a ${depth.toLowerCase()} piece written using the ${title} tool. It beautifully captures ${desc}.\n\nWith warmth,\n💗 HeartNote AI`;
-      document.getElementById('output').innerText = message;
-    }
+  // Basic tone function depending on emotional depth
+  function tone(light, medium, deep) {
+    if (depth === 'light') return light;
+    if (depth === 'medium') return medium;
+    return deep;
+  }
 
-    function copyText() {
-      const text = document.getElementById('output').innerText;
-      navigator.clipboard.writeText(text);
-      alert("Copied to clipboard 💗");
-    }
+  let message = '';
+
+  // 🌤️ Reflection
+  if (title.includes('reflection')) {
+    message = tone(
+      `I'm pausing to appreciate **${desc}** and what it teaches me about ${name}.`,
+      `Reflecting on ${desc}, I realize growth comes from embracing every side of ${name}.`,
+      `In the stillness of ${desc}, I understand ${name} is part of my deeper purpose.`
+    );
+  }
+  // 📔 Journal
+  else if (title.includes('journal')) {
+    const date = new Date().toLocaleDateString();
+    message = tone(
+      `Date: ${date}\nToday I thought about ${name}. ${desc} made me smile gently.`,
+      `Date: ${date}\nI wrote this journal to process ${desc} and how ${name} shapes me.`,
+      `Date: ${date}\n${desc} revealed how deeply I care for ${name}. Growth feels real now.`
+    );
+  }
+  // 💬 Note
+  else if (title.includes('note')) {
+    message = tone(
+      `Just a note — ${desc} reminds me to stay calm and connected with ${name}.`,
+      `${desc} is teaching me to see ${name} in softer light.`,
+      `Every moment of ${desc} strengthens how I understand ${name} inside me.`
+    );
+  }
+  // 🌿 Affirmation
+  else if (title.includes('affirmation')) {
+    message = tone(
+      `I trust that I’m growing with ${name}, even when ${desc} feels uncertain.`,
+      `I am capable of turning ${desc} into clarity. ${name} brings peace.`,
+      `Through ${desc}, I rise with power. ${name} is part of my strength.`
+    );
+  }
+  // ✉️ Letter
+  else if (title.includes('letter')) {
+    message = tone(
+      `Dear ${name},\n\nYour presence means the world to me. ${desc} feels light and honest.\n\nWarm regards,\n💗 HeartNote AI`,
+      `Dear ${name},\n\nI’ve been thinking about ${desc} and how much it matters to us.\n\nWith care,\n💗 HeartNote AI`,
+      `My dearest ${name},\n\n${desc} has shown me love in its rawest form. You’ve changed my world.\n\nAlways,\n💗 HeartNote AI`
+    );
+  }
+  // 📝 Poem
+  else if (title.includes('poem')) {
+    message = tone(
+      `When ${desc} drifts in the silent sky,\nI think of ${name}, and wonder why.`,
+      `Between the stars and beating flame,\n${desc} whispers softly, calling ${name}.`,
+      `${desc} paints the night in hue,\nEvery word I write is just for you, ${name}.`
+    );
+  }
+  // 📚 Story
+  else if (title.includes('story')) {
+    message = tone(
+      `Once, ${name} discovered that ${desc} could change everything.`,
+      `In the heart of ${desc}, ${name} found courage and quiet strength.`,
+      `Through ${desc}, ${name} learned the power of love, loss, and becoming whole again.`
+    );
+  }
+  // 💖 Quote
+  else if (title.includes('quote')) {
+    message = tone(
+      `"${desc} reminds me that connection with ${name} is the simplest form of peace."`,
+      `"Through ${desc}, I find meaning with ${name} beyond words."`,
+      `"Even in ${desc}, the truth of ${name} shines without fear."`
+    );
+  }
+  // Default fallback
+  else {
+    message = `Dear ${name},\n\nThis is a ${depth} piece capturing ${desc}.\n\nWith warmth,\n💗 HeartNote AI`;
+  }
+
+  output.innerText = message;
+}
+
+    // 📋 Copy Function
+function copyText() {
+  const text = document.getElementById('output').innerText;
+  navigator.clipboard.writeText(text);
+  alert("Copied to clipboard 💗");
+}
   document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput");
   const toolList = document.getElementById("toolList");
