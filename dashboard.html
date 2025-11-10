@@ -599,6 +599,14 @@ function suggestFeeling() {
     // Show or hide tool list based on matches
     toolList.style.display = matchFound ? "grid" : "none";
   });
+
+  // ✅ Hide tool list when user clicks a tool
+  tools.forEach((tool) => {
+    tool.addEventListener("click", () => {
+      toolList.style.display = "none";
+      searchInput.value = ""; // optional: clear search after click
+    });
+  });
 });
   </script>
 </body>
