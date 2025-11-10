@@ -461,125 +461,146 @@ function copyText() {
   return document.getElementById("toolTitle").innerText.trim().toLowerCase();
 }
 
-// 💗 Topic suggestions based on mode
-function suggestName() {
-  const mode = currentMode();
-  let ideas = [];
-
-  switch (mode) {
-    case "reflection":
-      ideas = ["today", "my journey", "a lesson learned", "a recent challenge"];
-      break;
-    case "journal":
-      ideas = ["this week", "a tough day", "something I’m grateful for", "a small victory"];
-      break;
-    case "notes":
-      ideas = ["myself", "a close friend", "a quiet moment", "my goals"];
-      break;
-    case "affirmation":
-      ideas = ["self-worth", "courage", "forgiveness", "hope"];
-      break;
-    case "letters":
-      ideas = ["someone I miss", "a mentor", "my past self", "a loved one"];
-      break;
-    case "poems":
-      ideas = ["the rain", "the moonlight", "change", "love"];
-      break;
-    case "story":
-      ideas = ["a new beginning", "a journey of hope", "a forgotten promise", "a dreamer"];
-      break;
-    case "quotes":
-      ideas = ["resilience", "kindness", "truth", "time"];
-      break;
-    default:
-      ideas = ["life", "growth", "connection", "peace"];
-  }
-
-  document.getElementById("nameInput").value =
-    ideas[Math.floor(Math.random() * ideas.length)];
+// Function to get the current mode (Type) from the HTML
+function getCurrentMode() {
+    const toolElement = document.getElementById('toolTitle');
+    // Reads the data-type attribute, defaulting to 'default'
+    return toolElement ? toolElement.getAttribute('data-type') : 'default';
 }
 
-// 📝 Feeling suggestions based on mode
+// Utility to select a random element from an array
+const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+// 💗 Topic suggestions based on mode (Name Input)
+function suggestName() {
+    // 1. IMPROVEMENT: Use the robust mode reader
+    const mode = getCurrentMode();
+    let ideas = [];
+
+    switch (mode) {
+        case "reflection":
+            ideas = ["today's lesson", "my personal journey", "a lesson I learned", "a recent challenge"];
+            break;
+        case "journal":
+            ideas = ["this week's events", "a tough day I overcame", "something I’m grateful for", "a small victory"];
+            break;
+        case "notes":
+            ideas = ["myself and my needs", "a close friend", "a quiet moment", "my future goals"];
+            break;
+        case "affirmation":
+            ideas = ["self-worth", "courage", "forgiveness", "hope"];
+            break;
+        case "letters":
+            // 2. MINOR TWEAK: Clarify recipient role for better generated output
+            ideas = ["a dear friend", "a mentor", "my past self", "a loved one"];
+            break;
+        case "poems":
+            ideas = ["the rain", "the moonlight", "the process of change", "unconditional love"];
+            break;
+        case "story":
+            ideas = ["a new beginning", "a journey of hope", "a forgotten promise", "a dreamer"];
+            break;
+        case "quotes":
+            ideas = ["resilience", "kindness", "truth", "time"];
+            break;
+        default:
+            ideas = ["life", "growth", "connection", "peace"];
+    }
+
+    // Set the value
+    document.getElementById("nameInput").value = getRandom(ideas);
+}
+
+// 📝 Feeling suggestions based on mode (Description Input)
 function suggestFeeling() {
-  const mode = currentMode();
-  let emotions = [];
+    // 1. IMPROVEMENT: Use the robust mode reader
+    const mode = getCurrentMode();
+    let emotions = [];
 
-  switch (mode) {
-    case "reflection":
-      emotions = [
-        "a sense of calm returning",
-        "growth through mistakes",
-        "clarity after confusion",
-        "learning patience"
-      ];
-      break;
-    case "journal":
-      emotions = [
-        "feeling proud of my progress",
-        "overwhelmed but still hopeful",
-        "curious about what’s next",
-        "grateful for small steps"
-      ];
-      break;
-    case "notes":
-      emotions = [
-        "hope for tomorrow",
-        "gentle self-reminder",
-        "a spark of confidence",
-        "inner calm returning"
-      ];
-      break;
-    case "affirmation":
-      emotions = [
-        "trust in my strength",
-        "peace in who I am",
-        "confidence to keep going",
-        "healing energy flowing"
-      ];
-      break;
-    case "letters":
-      emotions = [
-        "forgiveness and closure",
-        "unspoken gratitude",
-        "love with sincerity",
-        "regret turning to understanding"
-      ];
-      break;
-    case "poems":
-      emotions = [
-        "the ache of nostalgia",
-        "soft wonder",
-        "love that lingers",
-        "melancholy beauty"
-      ];
-      break;
-    case "story":
-      emotions = [
-        "hope in adversity",
-        "a turning point of courage",
-        "transformation and healing",
-        "finding meaning in struggle"
-      ];
-      break;
-    case "quotes":
-      emotions = [
-        "timeless wisdom",
-        "the beauty of resilience",
-        "the art of letting go",
-        "truth found in stillness"
-      ];
-      break;
-    default:
-      emotions = [
-        "quiet optimism",
-        "simple gratitude",
-        "inner peace",
-        "gentle reflection"
-      ];
-  }
+    switch (mode) {
+        case "reflection":
+            emotions = [
+                "a sense of calm returning",
+                "growth through mistakes",
+                "clarity after confusion",
+                "learning patience",
+                "quiet acceptance" // Added for variability
+            ];
+            break;
+        case "journal":
+            emotions = [
+                "feeling proud of my progress",
+                "overwhelmed but still hopeful",
+                "curious about what’s next",
+                "grateful for small steps",
+                "a sudden moment of joy" // Added for variability
+            ];
+            break;
+        case "notes":
+            emotions = [
+                "hope for tomorrow",
+                "gentle self-reminder",
+                "a spark of confidence",
+                "inner calm returning",
+                "a quiet breakthrough" // Added for variability
+            ];
+            break;
+        case "affirmation":
+            emotions = [
+                "trust in my strength",
+                "peace in who I am",
+                "confidence to keep going",
+                "healing energy flowing",
+                "unwavering capability" // Added for variability
+            ];
+            break;
+        case "letters":
+            emotions = [
+                "forgiveness and closure",
+                "unspoken gratitude",
+                "love with sincerity",
+                "regret turning to understanding",
+                "a difficult but necessary truth" // Added for variability
+            ];
+            break;
+        case "poems":
+            emotions = [
+                "the ache of nostalgia",
+                "soft wonder",
+                "love that lingers",
+                "melancholy beauty",
+                "a fragile memory" // Added for variability
+            ];
+            break;
+        case "story":
+            emotions = [
+                "hope in adversity",
+                "a turning point of courage",
+                "transformation and healing",
+                "finding meaning in struggle",
+                "the weight of destiny" // Added for variability
+            ];
+            break;
+        case "quotes":
+            emotions = [
+                "timeless wisdom",
+                "the beauty of resilience",
+                "the art of letting go",
+                "truth found in stillness",
+                "the power of intention" // Added for variability
+            ];
+            break;
+        default:
+            emotions = [
+                "quiet optimism",
+                "simple gratitude",
+                "inner peace",
+                "gentle reflection"
+            ];
+    }
 
-  document.getElementById("descInput").value =
-    emotions[Math.floor(Math.random() * emotions.length)];
+    // Set the value
+    document.getElementById("descInput").value = getRandom(emotions);
 }
   document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput");
