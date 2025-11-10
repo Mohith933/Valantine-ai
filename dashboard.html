@@ -381,7 +381,7 @@
     );
   }
   // 💬 Note
-  else if (title.includes('note')) {
+  else if (title.includes('notes')) {
     message = tone(
       `Just a note — ${desc} reminds me to stay calm and connected with ${name}.`,
       `${desc} is teaching me to see ${name} in softer light.`,
@@ -397,7 +397,7 @@
     );
   }
   // ✉️ Letter
-  else if (title.includes('letter')) {
+  else if (title.includes('letters')) {
     message = tone(
       `Dear ${name},\n\nYour presence means the world to me. ${desc} feels light and honest.\n\nWarm regards,\n💗 HeartNote AI`,
       `Dear ${name},\n\nI’ve been thinking about ${desc} and how much it matters to us.\n\nWith care,\n💗 HeartNote AI`,
@@ -405,7 +405,7 @@
     );
   }
   // 📝 Poem
-  else if (title.includes('poem')) {
+  else if (title.includes('poems')) {
     message = tone(
       `When ${desc} drifts in the silent sky,\nI think of ${name}, and wonder why.`,
       `Between the stars and beating flame,\n${desc} whispers softly, calling ${name}.`,
@@ -421,7 +421,7 @@
     );
   }
   // 💖 Quote
-  else if (title.includes('quote')) {
+  else if (title.includes('quotes')) {
     message = tone(
       `"${desc} reminds me that connection with ${name} is the simplest form of peace."`,
       `"Through ${desc}, I find meaning with ${name} beyond words."`,
@@ -457,22 +457,22 @@ function suggestName() {
     case "journal":
       ideas = ["this week", "a tough day", "something I’m grateful for", "a small victory"];
       break;
-    case "note":
+    case "notes":
       ideas = ["myself", "a close friend", "a quiet moment", "my goals"];
       break;
     case "affirmation":
       ideas = ["self-worth", "courage", "forgiveness", "hope"];
       break;
-    case "letter":
+    case "letters":
       ideas = ["someone I miss", "a mentor", "my past self", "a loved one"];
       break;
-    case "poem":
+    case "poems":
       ideas = ["the rain", "the moonlight", "change", "love"];
       break;
     case "story":
       ideas = ["a new beginning", "a journey of hope", "a forgotten promise", "a dreamer"];
       break;
-    case "quote":
+    case "quotes":
       ideas = ["resilience", "kindness", "truth", "time"];
       break;
     default:
@@ -505,7 +505,7 @@ function suggestFeeling() {
         "grateful for small steps"
       ];
       break;
-    case "note":
+    case "notes":
       emotions = [
         "hope for tomorrow",
         "gentle self-reminder",
@@ -521,7 +521,7 @@ function suggestFeeling() {
         "healing energy flowing"
       ];
       break;
-    case "letter":
+    case "letters":
       emotions = [
         "forgiveness and closure",
         "unspoken gratitude",
@@ -529,7 +529,7 @@ function suggestFeeling() {
         "regret turning to understanding"
       ];
       break;
-    case "poem":
+    case "poems":
       emotions = [
         "the ache of nostalgia",
         "soft wonder",
@@ -545,7 +545,7 @@ function suggestFeeling() {
         "finding meaning in struggle"
       ];
       break;
-    case "quote":
+    case "quotes":
       emotions = [
         "timeless wisdom",
         "the beauty of resilience",
