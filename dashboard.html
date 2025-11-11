@@ -70,12 +70,7 @@
 }
 
 .dropdown-content a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 14px;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  transition: background 0.3s;
+ display:block;padding:12px 14px;border-radius:10px;color:var(--text);text-decoration:none;margin-bottom:6px;font-weight:500;opacity:0.85;transition:all .2s;
 }
 
 .dropdown-content a:hover {
@@ -146,29 +141,6 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
-}
-.account-section {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  padding: 0 0.8rem 1rem;
-}
-
-.sidebar-btn {
-  background: transparent;
-  border: none;
-  color: #fff;
-  text-align: left;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.3s;
-  padding: 0.6rem 0.8rem;
-  border-radius: 8px;
-}
-
-.sidebar-btn:hover {
-  background: var(--accent);
 }
     /* Cards */
     .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;}
@@ -308,10 +280,6 @@
 </nav>
 
     </div>
-    <div class="account-section">
-    <button id="profileBtn" class="sidebar-btn">👤 Profile</button>
-    <button id="settingsBtn" class="sidebar-btn">⚙️ Settings</button>
-  </div>
     <button class="upgrade-btn">Upgrade to Pro 💗</button>
   </aside>
 
@@ -404,13 +372,6 @@
     if (username) {
       document.getElementById('welcomeText').innerText = `Welcome, ${username} 💞`;
     }
-    document.getElementById("profileBtn").addEventListener("click", () => {
-  alert("Profile section coming soon!");
-});
-
-document.getElementById("settingsBtn").addEventListener("click", () => {
-  alert("Settings section coming soon!");
-});
 
 
     function openTool(name) {
