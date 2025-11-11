@@ -347,8 +347,8 @@
       document.querySelector('.menu a').classList.add('active'); // dashboard active
     }
 
- function generateContent() {
-  // 1. IMPROVEMENT: Use .trim() for clean input and use const for variables
+function generateContent() {
+  // 1. Robust Input Handling: Trim whitespace and define const variables
   const name = document.getElementById('nameInput').value.trim() || 'someone special';
   const desc = document.getElementById('descInput').value.trim() || 'your emotions';
   // Use .trim() to handle accidental spaces like " medium "
@@ -363,9 +363,8 @@
   const signature = '\n💗 HeartNote AI';
 
   // Basic tone function depends on emotional depth
-  // 2. IMPROVEMENT: Use a switch statement or ternary for clearer flow and default handling
   function tone(light, medium, deep) {
-    // 3. IMPROVEMENT: Pass arrays and select a random element for non-repetition
+    // Pass arrays and select a random element for non-repetition
     if (depth === 'light') return getRandom(light);
     if (depth === 'medium') return getRandom(medium);
     // If input is 'deep' OR any other invalid value, default to the deep template
@@ -374,78 +373,162 @@
 
   let message = '';
 
-  // 4. IMPROVEMENT: Templates are now arrays for variability.
-  
-  // 🌤️ Reflection
+  // --- 🌤️ Reflection Mode (Enhanced Tone) ---
   if (title.includes('reflection')) {
-    message = tone(
-      [`I'm pausing to appreciate **${desc}** and what it teaches me about ${name}.`, `A gentle reflection on ${desc} and the unique perspective ${name} provides.`],
-      [`Reflecting on ${desc}, I realize growth comes from embracing every side of ${name}.`, `The journey through ${desc} is deepening my bond and understanding of ${name}.`],
-      [`In the stillness of ${desc}, I understand ${name} is part of my deeper purpose.`, `The profound meaning of ${desc} illuminates my inner connection to ${name}.`]
+    const opening = tone(
+      // Light
+      [`I'm pausing to let the weight of **${desc}** settle gently. Sometimes, the softest moments hold the clearest answers, reminding me that even today, I am moving forward with ${name}.`,
+       `A quiet moment to appreciate **${desc}**. Instead of rushing, I choose acceptance, which helps me see my path with ${name} clearly.`],
+      // Medium
+      [`Thinking deeply about **${desc}** and ${name}, I realize how much energy goes into resisting what is. True clarity isn't about solving every problem right now, but about observing the process itself.`,
+       `Reflecting on **${desc}**, I understand that complexity is part of growth. I am charting the emotional space and choosing to move forward with ${name}'s presence in mind.`],
+      // Deep
+      [`In the quiet echo of **${desc}** and ${name}, I find a profound lesson. This challenge is revealing a strength I didn't know I had, shaping the core of what I’m still learning to understand about myself and my purpose.`,
+       `The impact of **${desc}** is undeniable. I am using this experience as a catalyst, searching for the core truth that defines my deepest commitment and connection to ${name}.`]
     );
+    const closing = tone(
+      // Light
+      [`Maybe the goal isn’t speed, but simply being present in the moment with ${name}.`, `I am gentle with myself as I navigate this, knowing ${name} is here.`],
+      // Medium
+      [`Maybe true calm isn’t the absence of chaos—it’s seeing clearly through it, with ${name}.`, `I honor the complexity of this feeling and embrace the clarity it brings.`],
+      // Deep
+      [`Even in the greatest chaos, the deepest part of my intention stays gentle and true because of ${name}.`, `I carry the profound lesson of this moment with me into the silence, dedicated to ${name}.`]
+    );
+    message = `${opening}\n\n${closing}`;
   }
-  // 📔 Journal
+  
+  // --- 📔 Journal Mode (Enhanced Tone) ---
   else if (title.includes('journal')) {
-    message = tone(
-      [`Today I thought about ${name}. ${desc} made me smile gently.`, `${desc} was noted today, a soft reminder of my thoughts on ${name}.`],
-      [`I wrote this journal entry to process ${desc} and how ${name} shapes me.`, `Processing the feelings of ${desc} helps clarify my relationship with ${name}.`],
-      [`${desc} revealed how deeply I care for ${name}. Growth feels real now.`, `The intensity of ${desc} is a powerful mirror reflecting my inner truth about ${name}.`]
+    const start = tone(
+      // Light
+      [`It was a gentle day. **${desc}** stayed on my mind, but I was able to manage it by focusing on small, controllable steps. I feel a quiet sense of release now, thanks to ${name}.`,
+       `I’m writing this to remember the small joys. Even with **${desc}** present, I found a moment of simple peace regarding ${name}.`],
+      // Medium
+      [`Today, **${desc}** brought up some complex feelings, making me think about my personal boundaries and how I’m growing with ${name}. I'm exploring the difficulty without judgment.`,
+       `I am processing the full weight of **${desc}**. This requires honesty and patience, but I believe the growth I seek regarding ${name} is on the other side of this challenge.`],
+      // Deep
+      [`This entry is dedicated to processing **${desc}**. This situation challenged me at my core, but every challenge teaches something essential and real about who I am and what I value in my connection to ${name}.`,
+       `The profound impact of **${desc}** has shifted my perspective. I am charting new emotional territory and embracing the raw intensity of this realization about ${name}.`]
     );
-    message = `Date: ${date}\n${message}`; // Add date only after generation
+    const end = tone(
+      // Light
+      [`I’ll rest tonight knowing I navigated today with kindness and did enough for ${name}.`, `A restful night awaits, carrying only the necessary lessons from today about ${name}.`],
+      // Medium
+      [`Tomorrow is a new start—I'll carry the lessons from **${desc}** gently into the morning for ${name}.`, `I am committed to showing up with intention tomorrow, armed with this self-awareness.`],
+      // Deep
+      [`I might not have all the answers right now, but I’m proud of the emotional space I’ve carved out to process this deep feeling for ${name}.`, `I honor the profound strength it takes to face this truth and choose self-compassion.`]
+    );
+    message = `Date: ${date}\n\n${start}\n\n${end}`;
   }
-  // 💬 Note
+  
+  // --- 💬 Note Mode (Enhanced Tone) ---
   else if (title.includes('notes')) {
     message = tone(
-      [`Just a note — ${desc} reminds me to stay calm and connected with ${name}.`, `Quick thought: ${desc} and its subtle connection to ${name}.`],
-      [`${desc} is teaching me to see ${name} in softer light.`, `This feeling of ${desc} is an important lesson about my relationship with ${name}.`],
-      [`Every moment of ${desc} strengthens how I understand ${name} inside me.`, `The gravity of ${desc} deepens my appreciation for ${name}.`]
+      // Light
+      [`A quiet reminder: Breathe. You have handled **${desc}** with grace, and you are already doing enough. Be kind to yourself today, ${name}.`,
+       `A gentle check-in: It's okay to slow down. The pace of your life is yours to set, especially when dealing with **${desc}** regarding ${name}.`],
+      // Medium
+      [`Remember your focus. Progress isn’t loud, it’s consistent. Keep going quietly, especially in the face of **${desc}**—your steady effort for ${name} matters.`,
+       `You have the clarity you need. Filter the noise and focus only on the next gentle step forward regarding **${desc}** and ${name}.`],
+      // Deep
+      [`The deepest confidence comes from within. Your calm strength is the loudest voice in the room, capable of navigating anything related to **${desc}** and ${name}.`,
+       `This challenge around **${desc}** is refining your character. Embrace the process; your true strength for ${name} is revealed in the quiet intensity of this moment.`]
     );
   }
-  // 🌿 Affirmation
+
+  // --- 🌿 Affirmation Mode (Enhanced Tone) ---
   else if (title.includes('affirmation')) {
     message = tone(
-      [`I trust that I’m growing with ${name}, even when ${desc} feels uncertain.`, `I affirm peace, accepting ${desc} as part of my journey with ${name}.`],
-      [`I am capable of turning ${desc} into clarity. ${name} brings peace.`, `I choose to be resilient through ${desc}. I honor the strength ${name} represents.`],
-      [`Through ${desc}, I rise with power. ${name} is part of my strength.`, `I am whole and complete. ${desc} is merely a step in my absolute dedication to ${name}.`]
+      // Light
+      [`I'm learning to trust myself with the discomfort of **${desc}**. I am safe, even when I feel unsure about ${name}.`,
+       `My connection to peace is greater than the uncertainty of **${desc}**. I choose calm for myself and ${name}.`],
+      // Medium
+      [`I can create something good each day, no matter how small, and that effort is enough to handle **${desc}** with dignity for ${name}.`,
+       `I am flexible and resilient. I adapt my plans with grace as I navigate the complexity of **${desc}** regarding ${name}.`],
+      // Deep
+      [`I am stronger than I think. Every setback and difficulty related to **${desc}** becomes a clear direction toward my highest self and my relationship with ${name}.`,
+       `I welcome the challenge of **${desc}** because it allows me to embody my deepest power and commitment to ${name}.`]
     );
   }
-  // ✉️ Letter
+
+  // --- ✉️ Letter Mode (Enhanced Tone) ---
   else if (title.includes('letters')) {
-    message = tone(
-      [`Dear ${name},\n\nYour presence means the world to me. ${desc} feels light and honest.\n\nWarm regards,`, `Hi ${name},\n\nThinking of you. ${desc} made me smile.\n\nWarm regards,`],
-      [`Dear ${name},\n\nI’ve been thinking about ${desc} and how much it matters to us.\n\nWith care,`, `Hello ${name},\n\nThis feeling about ${desc} is helping me understand our bond better.\n\nWith care,`],
-      [`My dearest ${name},\n\n${desc} has shown me love in its rawest form. You’ve changed my world.\n\nAlways,`, `To ${name},\n\n${desc} is a truth that connects us on the deepest level. I am forever grateful.\n\nAlways,`]
+    // Use the name input for salutation
+    const recipient = name.trim().replace(/^a\s+/i, ''); // Simple cleanup for generic roles like 'a mentor'
+    
+    const salutation = tone(
+      [`Dear ${recipient},`, `Hi ${recipient},`],
+      [`To the person who means the world to me,`, `Dear valued ${recipient},`],
+      [`My Dearest ${recipient},`, `To my profound companion, ${recipient},`]
     );
-    message += signature; // Add signature consistently
+
+    const body = tone(
+      // Light
+      [`I've been giving a lot of thought to **${desc}**. Sometimes the easiest way to solve something is just to talk about it openly. I wanted to send this note to bridge the distance and let you know that I'm here, and I genuinely care. I believe we can work things out with a little kindness.`,
+       `This feeling has been on my mind, and I wanted to reach out simply to say thank you for your presence. You help me find clarity, even when **${desc}** feels heavy.`],
+      // Medium
+      [`It's often hard to find the right words, especially when dealing with **${desc}**. I truly regret any confusion or distress I may have caused. I value our connection and I am focused on making things right and earning back your trust. My actions didn't reflect the respect I have for you.`,
+       `I am reaching out because our connection is important. I want to discuss the matter of **${desc}** openly and with sincerity. My intention is to understand your perspective completely.`],
+      // Deep
+      [`In the quiet moments, all I can think about is **${desc}** and the regret that follows. I am deeply sorry. My intention was never to cause you pain, and seeing how my words/actions impacted you has given me a lot of perspective. Please know that this apology comes from the deepest part of my heart. I am committed to true change.`,
+       `You have changed my world. The intensity of **${desc}** only reinforces the profound strength of our bond. Thank you for teaching me the deepest meaning of care.`]
+    );
+
+    const closing = tone(
+      [`Looking forward to better moments,`, `With warmth and care,`],
+      [`With sincerity and hope for the future,`, `With steady commitment,`],
+      [`With profound love and commitment,`, `Yours always,`]
+    );
+    
+    message = `${salutation}\n\n${body}\n\n${closing}${signature}`;
   }
-  // 📝 Poem
+
+  // --- 📝 Poem Mode (Enhanced Tone) ---
   else if (title.includes('poems')) {
-    message = tone(
-      [`When ${desc} drifts in the silent sky,\nI think of ${name}, and wonder why.`, `A tiny echo, softly low,\nFor ${name} and the simple ${desc} glow.`],
-      [`Between the stars and beating flame,\n${desc} whispers softly, calling ${name}.`, `The path of ${desc}, a gentle hill,\nWhere memories of ${name} linger still.`],
-      [`${desc} paints the night in hue,\nEvery word I write is just for you, ${name}.`, `In ${desc}'s profound and solemn light,\nI find my anchor, my ${name}, held tight.`]
+    const verse1 = tone(
+      [`When **${desc}** starts to whisper near, \nLike moonlight touching the still air,`, `The gentle rain on **${desc}** falls,\nAnd quiets every busy call.`],
+      [`In the deep rhythm where **${desc}** resides, \nA constant tide the heart cannot refuse,`, `The shadows lift, the light takes hold,\nUpon the story **${desc}** told.`],
+      [`The memory of **${desc}** is a truth untold, \nA hidden seam within the soul's old fold,`, `A burning star, a solemn, sacred space,\nThe fearless mirror showing **${desc}**'s grace.`]
     );
+    const verse2 = tone(
+      [`A quiet grace that pauses time,\nAnd turns the simple thought to rhyme.`, `A soft reflection in the blue,\nOf every moment shared with ${name}.`],
+      [`It moves the spirit through calm and fire,\nWriting its own melody of desire.`, `The choice is clear, the focus bright,\nIlluminating purpose in the night for ${name}.`],
+      [`It is the silence that defines the space,\nThe courageous commitment found in this place.`, `It is the core, the absolute command,\nThe destiny held in your own hand for ${name}.`]
+    );
+    message = `${verse1}\n${verse2}`;
   }
-  // 📚 Story
+
+  // --- 📚 Story Mode (Enhanced Tone) ---
   else if (title.includes('story')) {
-    message = tone(
-      [`Once, ${name} discovered that ${desc} could change everything.`, `The adventure began when ${name} finally accepted the feeling of ${desc}.`],
-      [`In the heart of ${desc}, ${name} found courage and quiet strength.`, `A chapter unfolded where ${name} learned the true meaning of ${desc}.`],
-      [`Through ${desc}, ${name} learned the power of love, loss, and becoming whole again.`, `The epic conclusion saw ${name} master the profound truth held within ${desc}.`]
+    const opening = tone(
+      [`It began one quiet afternoon with just a small seed of an idea about **${desc}**. The protagonist, ${name}, felt a faint pull toward a dream he couldn't name, a soft certainty that something significant was just beyond the horizon.`,
+       `The story of **${desc}** starts simply, with ${name} discovering a gentle, yet persistent, inspiration that nudged them toward an unknown path.`],
+      [`The true journey of **${desc}** wasn't easy; it started in a place of necessary conflict. ${name} realized they could only move forward by confronting a shared past—a moment of decisive action that would define their future.`,
+       `The conflict was not external but internal, as ${name} struggled to reconcile their ambition with the weight of **${desc}**, leading to a pivotal moment of choice.`],
+      [`Long ago, the quest for **${desc}** was a profound, almost spiritual undertaking. It involved ${name} trekking across the Glass Mountains, driven by a solitary, burning conviction that the greatest rewards require the deepest sacrifice.`,
+       `This epic saga centered entirely on the mastery of **${desc}**, pushing ${name} to the limits of human endurance and revealing a powerful, essential truth about the world.`]
     );
+    const climax = tone(
+      [`The resolution arrived with a gentle understanding, proving that vulnerability is its own strength.`, `The gentle twist in the plot proved that the simplest actions often yield the most profound results for ${name}.`],
+      [`The climax required courage—a choice made not in comfort, but in clarity, securing the future ${name} needed.`, `The resolution was balanced, honoring the past struggle while paving a clear, purposeful path forward for ${name}.`],
+      [`And so, the profound search concluded, making the concept of **${desc}** a lasting testament to enduring human will.`, `The saga ended with the revelation that the core of **${desc}** was not the answer, but the profound question itself for ${name}.`]
+    );
+    message = `${opening}\n\n${climax}`;
   }
-  // 💖 Quote
+
+  // --- 💖 Quote Mode (Enhanced Tone) ---
   else if (title.includes('quotes')) {
     message = tone(
-      [`"${desc} reminds me that connection with ${name} is the simplest form of peace."`, `"Happiness is a gentle ${desc} shared with ${name}."`],
-      [`"Through ${desc}, I find meaning with ${name} beyond words."`, `"Growth comes when we see ${desc} not as a challenge, but as a conversation with ${name}."`],
-      [`"Even in ${desc}, the truth of ${name} shines without fear."`, `"The deepest wisdom is born from the experience of ${desc} and the knowledge of ${name}."`]
+      [`"The quiet strength of **${desc}** is in the small, consistent steps we take every day with ${name}."`, `"Happiness is a gentle **${desc}** shared with ${name}, found in simple kindness. "`],
+      [`"True alignment begins when we realize that **${desc}** is not a destination, but the compass itself for ${name}."`, `"Meaning is found in the exploration of **${desc}**, not in its immediate resolution for ${name}."`],
+      [`"To truly understand the depth of human connection, one must first confront the powerful truth of **${desc}** and ${name}."`, `"The final word on **${desc}** is always self-compassion, leading to infinite strength for ${name}."`]
     );
   }
+  
   // Default fallback
   else {
-    // 5. IMPROVEMENT: Better default message for clarity
-    message = `Dear ${name},\n\nThis is a default piece capturing **${desc}**. (Depth: ${depth || 'Unknown'})\n\nWith warmth,${signature}`;
+    // Better default message for clarity
+    message = `Dear ${name},\n\nThis is a default piece capturing **${desc}**. (Mode: ${title || 'Unknown'}, Depth: ${depth || 'Unknown'})\n\nWith warmth,${signature}`;
   }
 
   output.innerText = message;
@@ -461,41 +544,61 @@ function copyText() {
 }
 
 // 💗 Topic suggestions based on mode
+// Function to determine the current mode (must be defined in the environment)
+// Assuming currentMode() retrieves the selected mode (e.g., from a dropdown/data-attribute)
+// Example placeholder for currentMode (you should use your actual implementation):
+function currentMode() {
+    // If you are using the title check from the previous code, the logic would be complex here.
+    // Assuming a <select id="mode-selector"> or similar element exists.
+    return document.getElementById("mode-selector")?.value.toLowerCase().trim() || 'default';
+}
+
+
 function suggestName() {
-  const mode = currentMode();
-  let ideas = [];
+  // Assuming currentMode() is defined and returns the mode string (e.g., 'reflection', 'letters')
+  const mode = currentMode();
+  let ideas = [];
 
-  switch (mode) {
-    case "reflection":
-      ideas = ["today", "my journey", "a lesson learned", "a recent challenge"];
-      break;
-    case "journal":
-      ideas = ["this week", "a tough day", "something I’m grateful for", "a small victory"];
-      break;
-    case "notes":
-      ideas = ["myself", "a close friend", "a quiet moment", "my goals"];
-      break;
-    case "affirmation":
-      ideas = ["self-worth", "courage", "forgiveness", "hope"];
-      break;
-    case "letters":
-      ideas = ["someone I miss", "a mentor", "my past self", "a loved one"];
-      break;
-    case "poems":
-      ideas = ["the rain", "the moonlight", "change", "love"];
-      break;
-    case "story":
-      ideas = ["a new beginning", "a journey of hope", "a forgotten promise", "a dreamer"];
-      break;
-    case "quotes":
-      ideas = ["resilience", "kindness", "truth", "time"];
-      break;
-    default:
-      ideas = ["life", "growth", "connection", "peace"];
-  }
+  // These ideas are designed to work well as the "who/what" the content is FOR (the nameInput).
+  switch (mode) {
+    case "reflection":
+      // Topics for deep thought and self-improvement
+      ideas = ["my journey", "a lesson learned", "my true self", "a difficult emotion", "my goals"];
+      break;
+    case "journal":
+      // Concrete people/things/events from the day
+      ideas = ["my current mood", "a challenging task", "something I’m grateful for", "a small victory", "the future"];
+      break;
+    case "notes":
+      // Targets for quick advice or reminders
+      ideas = ["myself", "a close friend", "a quiet moment", "my current goals", "a core value"];
+      break;
+    case "affirmation":
+      // Concepts to affirm oneself around
+      ideas = ["self-worth", "courage", "forgiveness", "hope", "my strength"];
+      break;
+    case "letters":
+      // Specific recipients
+      ideas = ["someone I miss", "a mentor", "my past self", "a loved one", "the future version of me"];
+      break;
+    case "poems":
+      // Subjects for poetic expression
+      ideas = ["the rain", "the moonlight", "change", "love", "a silent moment"];
+      break;
+    case "story":
+      // Protagonist concepts
+      ideas = ["a new beginning", "a journey of hope", "a dreamer", "a forgotten promise", "a hero"];
+      break;
+    case "quotes":
+      // Abstract ideas or concepts to capture
+      ideas = ["resilience", "kindness", "truth", "time", "wisdom"];
+      break;
+    default:
+      ideas = ["life", "growth", "connection", "peace", "today"];
+  }
 
-  document.getElementById("nameInput").value =
-    ideas[Math.floor(Math.random() * ideas.length)];
+  document.getElementById("nameInput").value =
+    ideas[Math.floor(Math.random() * ideas.length)];
 }
 
 // 📝 Feeling suggestions based on mode
