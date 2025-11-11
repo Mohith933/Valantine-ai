@@ -42,6 +42,45 @@
     .logo{font-weight:700;font-size:1.3rem;color:var(--accent);margin-bottom:40px;display:flex;align-items:center;gap:8px;}
     .menu a{display:block;padding:12px 14px;border-radius:10px;color:var(--text);text-decoration:none;margin-bottom:6px;font-weight:500;opacity:0.85;transition:all .2s;}
     .menu a:hover,.menu a.active{background:var(--accent);color:#fff;opacity:1;}
+    .menu-group {
+  margin-bottom: 0.8rem;
+}
+
+.dropdown-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.dropdown-btn:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.dropdown-content {
+  display: none;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.dropdown-content a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.dropdown-content a:hover {
+  background: rgba(255,255,255,0.1);
+}
     .upgrade-btn{background:var(--accent);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:600;cursor:pointer;transition:background .2s;}
     .upgrade-btn:hover{background:var(--accent-dark);}
 
@@ -108,13 +147,12 @@
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
 }
-    .account-section {
+.account-section {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
   padding: 0 0.8rem 1rem;
-  border-top: 1px solid rgba(255,255,255,0.2);
 }
 
 .sidebar-btn {
@@ -130,7 +168,7 @@
 }
 
 .sidebar-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--accent);
 }
     /* Cards */
     .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;}
@@ -243,16 +281,32 @@
     <div>
       <div class="logo">💞 HeartNote AI</div>
       <nav class="menu">
-        <a href="#" class="active" onclick="openTool('Dashboard')">🏠 Dashboard</a>
-        <a href="#" onclick="openTool('Reflection')">🌿 Reflection</a>
-        <a href="#" onclick="openTool('Journal')">📖 Journal</a>
-        <a href="#" onclick="openTool('Affirmation')">🌈 Affirmation</a>
-        <a href="#" onclick="openTool('Notes')">📝 Notes</a>
-        <a href="#" onclick="openTool('Letters')">💌 Letters</a>
-        <a href="#" onclick="openTool('Poems')">🪶 Poems</a>
-        <a href="#" onclick="openTool('Story')">✨ Story</a>
-        <a href="#" onclick="openTool('Quotes')">💭 Quotes</a>
-      </nav>
+
+  <!-- 🌞 Group 1: Day-to-Day Life -->
+  <div class="menu-group">
+    <button class="dropdown-btn">🌿 Day-to-Day Life ▾</button>
+    <div class="dropdown-content">
+      <a href="#" onclick="openTool('Dashboard')">🏠 Dashboard</a>
+      <a href="#" onclick="openTool('Reflection')">🌿 Reflection</a>
+      <a href="#" onclick="openTool('Journal')">📖 Journal</a>
+      <a href="#" onclick="openTool('Affirmation')">🌈 Affirmation</a>
+      <a href="#" onclick="openTool('Notes')">📝 Notes</a>
+    </div>
+  </div>
+
+  <!-- 💞 Group 2: Couples / Emotional Writing -->
+  <div class="menu-group">
+    <button class="dropdown-btn">💞 Heart & Emotion ▾</button>
+    <div class="dropdown-content">
+      <a href="#" onclick="openTool('Letters')">💌 Letters</a>
+      <a href="#" onclick="openTool('Poems')">🪶 Poems</a>
+      <a href="#" onclick="openTool('Story')">✨ Story</a>
+      <a href="#" onclick="openTool('Quotes')">💭 Quotes</a>
+    </div>
+  </div>
+
+</nav>
+
     </div>
     <div class="account-section">
     <button id="profileBtn" class="sidebar-btn">👤 Profile</button>
@@ -752,6 +806,13 @@ function suggestFeeling() {
     });
   });
 });
+    document.querySelectorAll('.dropdown-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    const dropdown = button.nextElementSibling;
+    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+  });
+});
+
   </script>
 </body>
 </html>
