@@ -233,6 +233,21 @@
       margin-top: 18px;
       opacity: 0.8;
     }
+    .dob-label {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+    #dob {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
 
     /* Responsive */
     @media (max-width: 768px) {
@@ -298,16 +313,26 @@
   </footer>
 
   <!-- Signup Modal -->
-  <div id="signupModal" class="modal">
-    <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
-      <h2>Create Account</h2>
-      <input type="text" id="username" placeholder="Username" required>
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <button id="submitSignup">Sign Up</button>
-    </div>
+<!-- Signup Modal -->
+<div id="signupModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <h2>Create Account</h2>
+    <label for="dob" class="dob-label">Username</label>
+    <input type="text" id="username" placeholder="Username" required>
+    <label for="dob" class="dob-label">Email</label>
+    <input type="email" id="email" placeholder="Email" required>
+     <label for="dob" class="dob-label">Password</label>
+    <input type="password" id="password" placeholder="Password" required>
+
+    <!-- New Date of Birth Field -->
+    <label for="dob" class="dob-label">Date of Birth</label>
+    <input type="date" id="dob" required>
+
+    <button id="submitSignup">Sign Up</button>
   </div>
+</div>
+
 
   <script>
     const modal = document.getElementById('signupModal');
@@ -331,6 +356,45 @@
         alert('Please fill all fields before continuing.');
       }
     };
+    document.getElementById("submitSignup").addEventListener("click", function () {
+  const username = document.getElementById("username").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const dob = document.getElementById("dob").value;
+
+  if (!username || !email || !password || !dob) {
+    alert("Please fill all fields!");
+    return;
+  }
+
+  // Calculate age
+  const birthDate = new Date(dob);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  // Store user info (you can replace with real backend later)
+  localStorage.setItem("username", username);
+  localStorage.setItem("email", email);
+  localStorage.setItem("dob", dob);
+  localStorage.setItem("age", age);
+
+  // Decide mode set
+  if (age < 18) {
+    alert(`Welcome ${username}! Under 18 mode activated: Day-to-day life tools only.`);
+    localStorage.setItem("mode", "under18");
+  } else {
+    alert(`Welcome ${username}! Full access unlocked: All modes available.`);
+    localStorage.setItem("mode", "adult");
+  }
+
+  // Close modal (optional)
+  document.getElementById("signupModal").style.display = "none";
+});
   </script>
 </body>
 </html>
