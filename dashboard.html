@@ -719,9 +719,6 @@ function saveRecent(toolName) {
     output: document.getElementById("output").innerText
   };
 
-  // Remove duplicates
-  recents = recents.filter(r => r.name !== toolName);
-
   // Add to top
   recents.unshift(data);
 
