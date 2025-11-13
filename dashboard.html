@@ -81,8 +81,6 @@
 
     /* Main area */
     .main{margin-left:230px;flex:1;padding:40px 60px;background:var(--muted);min-height:100vh;}
-    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;}
-    .topbar h1{color:var(--accent);font-size:1.6rem;font-weight:700;}
     .search-bar {
   position: relative;
   margin-bottom: 20px;
@@ -249,7 +247,7 @@
 .topbar-left h1 {
   margin: 0;
   color: var(--accent);
-  font-size: 1.05rem;
+  font-size:1.6rem;
 }
 
 /* Right side: avatar + name + caret */
@@ -387,7 +385,9 @@
 
   <!-- Main -->
   <main class="main">
-    <div class="topbar-left">
+   <!-- Topbar with avatar + dropdown -->
+<div class="topbar">
+  <div class="topbar-left">
     <h1 id="welcomeText">Welcome!</h1>
   </div>
 
@@ -409,6 +409,8 @@
       <button class="dropdown-item danger" role="menuitem" id="menuLogout">Logout</button>
     </div>
   </div>
+</div>
+
 
     <div class="search-bar">
   <span class="search-icon">🔍</span>
