@@ -1,850 +1,1267 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <title>HeartNote AI — Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap" rel="stylesheet">  
-  <style>
-    :root {
-      --accent: #ff4d6d;
-      --accent-dark: #e63950;
-      --bg: #ffffff;
-      --text: #222222;
-      --card: #fff;
-      --muted: #f9f9f9;
-    }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>HeartNote AI — Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #ff4d6d;
+            --accent-dark: #e63950;
+            --bg: #ffffff;
+            --text: #222222;
+            --card: #fff;
+            --muted: #f9f9f9;
+        }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0d0d0d;
-        --text: #f5f5f5;
-        --card: #1a1a1a;
-        --muted: #141414;
-        --accent: #ff668a;
-        --accent-dark: #ff4d6d;
-      }
-    }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0d0d0d;
+                --text: #f5f5f5;
+                --card: #1a1a1a;
+                --muted: #141414;
+                --accent: #ff668a;
+                --accent-dark: #ff4d6d;
+            }
+        }
 
-    * {margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;transition:background .3s,color .3s;}
-    body {background:var(--bg);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden;}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            transition: background .3s, color .3s;
+        }
 
-    /* Sidebar */
-    .sidebar {
-      width:230px;background:var(--card);
-      border-right:1px solid rgba(0,0,0,0.05);
-      padding:30px 20px;
-      display:flex;flex-direction:column;justify-content:space-between;
-      position:fixed;top:0;bottom:0;left:0;
-    }
-    .logo{font-weight:700;font-size:1.3rem;color:var(--accent);margin-bottom:40px;display:flex;align-items:center;gap:8px;}
-    .menu a{display:block;padding:12px 14px;border-radius:10px;color:var(--text);text-decoration:none;margin-bottom:6px;font-weight:500;opacity:0.85;transition:all .2s;}
-    .menu a:hover,.menu a.active{background:var(--accent);color:#fff;opacity:1;}
-    .menu-group {
-  margin-bottom: 0.8rem;
+        body {
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 230px;
+            background: var(--card);
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 12px 14px;
+            border-radius: 10px;
+            color: var(--text);
+            text-decoration: none;
+            margin-bottom: 6px;
+            font-weight: 500;
+            opacity: 0.85;
+            transition: all .2s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: var(--accent);
+            color: #fff;
+            opacity: 1;
+        }
+
+        .menu-group {
+            margin-bottom: 0.8rem;
+        }
+
+        .dropdown-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+            text-align: left;
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .dropdown-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .dropdown-content {
+            display: none;
+            flex-direction: column;
+            margin-left: 10px;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 12px 14px;
+            border-radius: 10px;
+            color: var(--text);
+            text-decoration: none;
+            margin-bottom: 6px;
+            font-weight: 500;
+            opacity: 0.85;
+            transition: all .2s;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .upgrade-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        .upgrade-btn:hover {
+            background: var(--accent-dark);
+        }
+
+        /* Main area */
+        .main {
+            margin-left: 230px;
+            flex: 1;
+            padding: 40px 60px;
+            background: var(--muted);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .topbar h1 {
+            color: var(--accent);
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .search-bar {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-bar .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 14px;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            opacity: 0.6;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 16px 12px 38px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 15px;
+            background: var(--card);
+            color: var(--text);
+            outline: none;
+            transition: box-shadow 0.2s;
+        }
+
+        .search-bar input:focus {
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .tool-list {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            background: var(--muted);
+            border-radius: 12px;
+            padding: 14px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tool-item {
+            background: var(--card);
+            padding: 10px 12px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .tool-item:hover {
+            transform: translateY(-2px);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+            transition: transform .2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-icon {
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: .9rem;
+            opacity: .85;
+        }
+
+        /* Workspace */
+        .workspace {
+            display: none;
+            animation: fadeIn .3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .workspace.active {
+            display: block;
+        }
+
+        .form-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .form-section,
+        .playground-section {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 14px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .form-section input,
+        .form-section textarea,
+        .form-section select {
+            width: 100%;
+            margin-bottom: 14px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: var(--muted);
+            color: var(--text);
+        }
+
+        .form-section label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .copy-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-dark);
+        }
+
+        .form-section button {
+            background: var(--accent);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .form-section button:hover {
+            background: var(--accent-dark);
+        }
+
+        .playground-section h3 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .output {
+            font-family: 'Caveat', cursive;
+            white-space: pre-wrap;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: var(--text);
+            padding-top: 10px;
+        }
+
+        .back-btn {
+            background: none;
+            color: var(--accent);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            font-size: .9rem;
+            opacity: .7;
+        }
+
+        .playground-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            /* allows wrapping on small screens */
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .input-with-suggest {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .input-with-suggest input,
+        .input-with-suggest textarea {
+            flex: 1;
+        }
+
+        .suggest-btn {
+            background: var(--accent-light, #ffd6e8);
+            border: none;
+            padding: 6px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1.1rem;
+        }
+
+        .suggest-btn:hover {
+            background: var(--accent, #ff8fb3);
+            color: white;
+        }
+
+        .copy-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-dark);
+        }
+ .recent-section {
+  margin-top: 30px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
 }
 
-.dropdown-btn {
-  background: transparent;
-  border: none;
+.recent-section h3 {
   color: #fff;
-  font-size: 15px;
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
-  padding: 0.6rem 0.8rem;
-  border-radius: 8px;
-  transition: background 0.3s;
+  margin-bottom: 10px;
+  font-size: 1.1em;
 }
 
-.dropdown-btn:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-.dropdown-content {
-  display: none;
+.recent-cards {
+  display: flex;
   flex-direction: column;
-  margin-left: 10px;
+  gap: 10px;
 }
 
-.dropdown-content a {
- display:block;padding:12px 14px;border-radius:10px;color:var(--text);text-decoration:none;margin-bottom:6px;font-weight:500;opacity:0.85;transition:all .2s;
-}
-
-.dropdown-content a:hover {
-  background: rgba(255,255,255,0.1);
-}
-    .upgrade-btn{background:var(--accent);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:600;cursor:pointer;transition:background .2s;}
-    .upgrade-btn:hover{background:var(--accent-dark);}
-
-    /* Main area */
-    .main{margin-left:230px;flex:1;padding:40px 60px;background:var(--muted);min-height:100vh;}
-    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;} .topbar h1{color:var(--accent);font-size:1.6rem;font-weight:700;}
-    .search-bar {
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.search-bar .search-icon {
-  position: absolute;
-  top: 50%;
-  left: 14px;
-  transform: translateY(-50%);
-  font-size: 1.1rem;
-  opacity: 0.6;
-}
-
-.search-bar input {
-  width: 100%;
-  padding: 12px 16px 12px 38px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.1);
-  font-size: 15px;
-  background: var(--card);
-  color: var(--text);
-  outline: none;
-  transition: box-shadow 0.2s;
-}
-
-.search-bar input:focus {
-  box-shadow: 0 0 0 2px var(--accent);
-}
-
-.tool-list {
-  display: none;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
-  background: var(--muted);
-  border-radius: 12px;
-  padding: 14px;
-  animation: fadeIn 0.3s ease;
-}
-
-.tool-item {
-  background: var(--card);
-  padding: 10px 12px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  cursor: pointer;
-  transition: transform 0.2s, background 0.3s;
-}
-
-.tool-item:hover {
-  transform: translateY(-2px);
-  background: var(--accent);
-  color: #fff;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-    /* Cards */
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;}
-    .card{background:var(--card);padding:22px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,0.06);cursor:pointer;transition:transform .2s;}
-    .card:hover{transform:translateY(-4px);}
-    .card-icon{font-size:28px;color:var(--accent);margin-bottom:10px;}
-    .card h3{font-size:1.1rem;color:var(--accent);margin-bottom:8px;}
-    .card p{font-size:.9rem;opacity:.85;}
-
-    /* Workspace */
-    .workspace{display:none;animation:fadeIn .3s ease;}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-    .workspace.active{display:block;}
-    .form-container{display:flex;gap:30px;flex-wrap:wrap;}
-    .form-section,.playground-section{background:var(--card);padding:24px;border-radius:14px;flex:1;min-width:300px;}
-    .form-section input,.form-section textarea,.form-section select{
-      width:100%;margin-bottom:14px;padding:12px;border-radius:10px;
-      border:1px solid rgba(0,0,0,0.1);background:var(--muted);color:var(--text);
-    }
-    .form-section label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: var(--accent);
-}
-.copy-btn {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  margin-left: 10px;
-  transition: background 0.2s;
-}
-.copy-btn:hover {
-  background: var(--accent-dark);
-}
-
-    .form-section button{background:var(--accent);color:#fff;padding:12px 18px;border-radius:10px;border:none;font-weight:600;cursor:pointer;}
-    .form-section button:hover{background:var(--accent-dark);}
-    .playground-section h3{color:var(--accent);margin-bottom:10px;}
-    .output{font-family:'Caveat',cursive;white-space:pre-wrap;font-size:1.15rem;line-height:1.6;color:var(--text);padding-top:10px;}
-    .back-btn{background:none;color:var(--accent);border:none;font-weight:600;cursor:pointer;text-decoration:underline;margin-bottom:15px;}
-    footer{text-align:center;margin-top:50px;padding:20px;font-size:.9rem;opacity:.7;}
-.playground-header {
+.recent-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; /* allows wrapping on small screens */
-  gap: 8px;
-  margin-bottom: 10px;
+  background: rgba(255,255,255,0.07);
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: 0.3s;
 }
-.input-with-suggest {
+
+.recent-left {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+  cursor: pointer;
 }
-.input-with-suggest input,
-.input-with-suggest textarea {
-  flex: 1;
+
+.recent-card:hover {
+  background: rgba(255,255,255,0.15);
 }
-.suggest-btn {
-  background: var(--accent-light, #ffd6e8);
+
+.recent-icon {
+  font-size: 1.3em;
+}
+
+.recent-text p {
+  margin: 0;
+  font-weight: 500;
+  color: #fff;
+}
+
+.recent-text small {
+  color: #bbb;
+  font-size: 0.8em;
+}
+
+.delete-btn {
+  background: transparent;
   border: none;
-  padding: 6px 8px;
-  border-radius: 8px;
+  color: #ff8888;
+  font-size: 1.1em;
   cursor: pointer;
   transition: 0.2s;
-  font-size: 1.1rem;
-}
-.suggest-btn:hover {
-  background: var(--accent, #ff8fb3);
-  color: white;
-}
-.copy-btn {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.2s;
 }
 
-.copy-btn:hover {
-  background: var(--accent-dark);
+.delete-btn:hover {
+  color: #ff4444;
 }
 
-    @media(max-width:768px){
-      .sidebar{display:none;}
-      .main{margin:0;padding:30px;}
-      .form-container{flex-direction:column;}
-.playground-header {
-     justify-content: flex-start;
-  }
 
-  .copy-btn {
-    font-size: 0.85rem;
-    padding: 6px 12px;
-  }
-  </style>
+        @media(max-width:768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin: 0;
+                padding: 30px;
+            }
+
+            .form-container {
+                flex-direction: column;
+            }
+
+            .playground-header {
+                justify-content: flex-start;
+            }
+
+            .copy-btn {
+                font-size: 0.85rem;
+                padding: 6px 12px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div>
-      <div class="logo">💞 HeartNote AI</div>
-      <nav class="menu">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div>
+            <div class="logo">💞 HeartNote AI</div>
+            <nav class="menu">
 
-  <!-- 🌞 Group 1: Day-to-Day Life -->
-  <div class="menu-group">
-    <button class="dropdown-btn">🌿 Day-to-Day Life ▾</button>
-    <div class="dropdown-content">
-      <a href="#" onclick="openTool('Dashboard')">🏠 Dashboard</a>
-      <a href="#" onclick="openTool('Reflection')">🌿 Reflection</a>
-      <a href="#" onclick="openTool('Journal')">📖 Journal</a>
-      <a href="#" onclick="openTool('Affirmation')">🌈 Affirmation</a>
-      <a href="#" onclick="openTool('Notes')">📝 Notes</a>
-    </div>
-  </div>
+                <!-- 🌞 Group 1: Day-to-Day Life -->
+                <div class="menu-group">
+                    <button class="dropdown-btn">🌿 Day-to-Day Life ▾</button>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="openTool('Dashboard')">🏠 Dashboard</a>
+                        <a href="#" onclick="openTool('Reflection')">🌿 Reflection</a>
+                        <a href="#" onclick="openTool('Journal')">📖 Journal</a>
+                        <a href="#" onclick="openTool('Affirmation')">🌈 Affirmation</a>
+                        <a href="#" onclick="openTool('Notes')">📝 Notes</a>
+                    </div>
+                </div>
 
-  <!-- 💞 Group 2: Couples / Emotional Writing -->
-  <div class="menu-group">
-    <button class="dropdown-btn">💞 Heart & Emotion ▾</button>
-    <div class="dropdown-content">
-      <a href="#" onclick="openTool('Letters')">💌 Letters</a>
-      <a href="#" onclick="openTool('Poems')">🪶 Poems</a>
-      <a href="#" onclick="openTool('Story')">✨ Story</a>
-      <a href="#" onclick="openTool('Quotes')">💭 Quotes</a>
-    </div>
-  </div>
-</nav>
+                <!-- 💞 Group 2: Couples / Emotional Writing -->
+                <div class="menu-group">
+                    <button class="dropdown-btn">💞 Heart & Emotion ▾</button>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="openTool('Letters')">💌 Letters</a>
+                        <a href="#" onclick="openTool('Poems')">🪶 Poems</a>
+                        <a href="#" onclick="openTool('Story')">✨ Story</a>
+                        <a href="#" onclick="openTool('Quotes')">💭 Quotes</a>
+                    </div>
+                </div>
+            </nav>
 
-    </div>
-    <button class="upgrade-btn">Upgrade to Pro 💗</button>
-  </aside>
-
-  <!-- Main -->
-  <main class="main">
-   <!-- Topbar with avatar + dropdown -->
-<div class="topbar"> <h1 id="welcomeText">Welcome!</h1> </div>
-
-
-    <div class="search-bar">
-  <span class="search-icon">🔍</span>
-  <input id="searchInput" type="text" placeholder="Search HeartNote tools or emotions..." />
-</div>
-
-<div id="toolList" class="tool-list">
-  <div class="tool-item" onclick="openTool('Letters')" >Love Letter</div>
-  <div class="tool-item" onclick="openTool('Poems')" >Poem Creator</div>
-  <div class="tool-item" onclick="openTool('Affirmation')" >Affirmation Writer</div>
-  <div class="tool-item" onclick="openTool('Journal')">Reflection Journal</div>
-  <div class="tool-item" onclick="openTool('Notes')" >Emotional Note</div>
-  <div class="tool-item" onclick="openTool('Quotes')" >Quote Maker</div>
-</div>
-
-    <!-- Dashboard Cards -->
-    <div id="libraryView">
-      <div class="cards">
-        <div class="card" onclick="openTool('Letters')">
-          <div class="card-icon">💌</div>
-          <h3>Love Letter Maker</h3>
-          <p>Express heartfelt feelings through poetic letters.</p>
         </div>
-        <div class="card" onclick="openTool('Affirmation')">
-          <div class="card-icon">🌈</div>
-          <h3>Affirmation Creator</h3>
-          <p>Create uplifting affirmations to brighten your day.</p>
+        <button class="upgrade-btn">Upgrade to Pro 💗</button>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+        <!-- Topbar with avatar + dropdown -->
+        <div class="topbar">
+            <h1 id="welcomeText">Welcome!</h1>
         </div>
-        <div class="card" onclick="openTool('Journal')">
-          <div class="card-icon">📔</div>
-          <h3>Mood Journal</h3>
-          <p>Reflect and write about your emotions daily.</p>
+
+
+        <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input id="searchInput" type="text" placeholder="Search HeartNote tools or emotions..." />
         </div>
-    </div>
-    </div>
 
-    <!-- Tool Workspace -->
-   <!-- Tool Workspace -->
-<div id="workspaceView" class="workspace">
-  <button class="back-btn" onclick="goBack()">← Back to Tools</button>
-  <div class="form-container">
-    <div class="form-section">
-      <h3 id="toolTitle">Reflection</h3>
+        <div id="toolList" class="tool-list">
+            <div class="tool-item" onclick="openTool('Letters')">Love Letter</div>
+            <div class="tool-item" onclick="openTool('Poems')">Poem Creator</div>
+            <div class="tool-item" onclick="openTool('Affirmation')">Affirmation Writer</div>
+            <div class="tool-item" onclick="openTool('Journal')">Reflection Journal</div>
+            <div class="tool-item" onclick="openTool('Notes')">Emotional Note</div>
+            <div class="tool-item" onclick="openTool('Quotes')">Quote Maker</div>
+        </div>
 
-      <label for="nameInput">💗 Recipient or Topic</label>
-      <div class="input-with-suggest">
-        <input type="text" id="nameInput" placeholder="Enter recipient or topic...">
-        <button class="suggest-btn" onclick="suggestName()" title="Suggest topic">💡</button>
-      </div>
-      <label for="descInput">📝 What do you feel?</label>
-      <div class="input-with-suggest">
-        <textarea id="descInput" rows="4" placeholder="Write your thoughts..."></textarea>
-        <button class="suggest-btn" onclick="suggestFeeling()" title="Suggest feeling">💡</button>
-      </div>
-
-      <label for="depthInput">🌊 Depth of Emotion</label>
-      <select id="depthInput">
-        <option value="light">Light</option>
-        <option value="medium">Medium</option>
-        <option value="deep">Deep</option>
-      </select>
-
-      <button onclick="generateContent()">Generate Content</button>
-    </div>
-
-    <div class="playground-section">
-      <div class="playground-header">
-        <h3>🖋️ Playground</h3>
-        <button class="copy-btn" onclick="copyText()">📋 Copy</button>
-      </div>
-      <div id="output" class="output">Your writing will appear here...</div>
-    </div>
+        <!-- Dashboard Cards -->
+        <div id="libraryView">
+            <div class="cards">
+                <div class="card" onclick="openTool('Letters')">
+                    <div class="card-icon">💌</div>
+                    <h3>Love Letter Maker</h3>
+                    <p>Express heartfelt feelings through poetic letters.</p>
+                </div>
+                <div class="card" onclick="openTool('Affirmation')">
+                    <div class="card-icon">🌈</div>
+                    <h3>Affirmation Creator</h3>
+                    <p>Create uplifting affirmations to brighten your day.</p>
+                </div>
+                <div class="card" onclick="openTool('Journal')">
+                    <div class="card-icon">📔</div>
+                    <h3>Mood Journal</h3>
+                    <p>Reflect and write about your emotions daily.</p>
+                </div>
+            </div>
+              <div id="recentSection" class="recent-section">
+    <h3>🕒 Recently Used</h3>
+    <div id="recentCards" class="recent-cards"></div>
   </div>
-</div>
+        </div>
+
+        <!-- Tool Workspace -->
+        <!-- Tool Workspace -->
+        <div id="workspaceView" class="workspace">
+            <button class="back-btn" onclick="goBack()">← Back to Tools</button>
+            <div class="form-container">
+                <div class="form-section">
+                    <h3 id="toolTitle">Reflection</h3>
+
+                    <label for="nameInput">💗 Recipient or Topic</label>
+                    <div class="input-with-suggest">
+                        <input type="text" id="nameInput" placeholder="Enter recipient or topic...">
+                        <button class="suggest-btn" onclick="suggestName()" title="Suggest topic">💡</button>
+                    </div>
+                    <label for="descInput">📝 What do you feel?</label>
+                    <div class="input-with-suggest">
+                        <textarea id="descInput" rows="4" placeholder="Write your thoughts..."></textarea>
+                        <button class="suggest-btn" onclick="suggestFeeling()" title="Suggest feeling">💡</button>
+                    </div>
+
+                    <label for="depthInput">🌊 Depth of Emotion</label>
+                    <select id="depthInput">
+                        <option value="light">Light</option>
+                        <option value="medium">Medium</option>
+                        <option value="deep">Deep</option>
+                    </select>
+
+                    <button onclick="generateContent()">Generate Content</button>
+                </div>
+
+                <div class="playground-section">
+                    <div class="playground-header">
+                        <h3>🖋️ Playground</h3>
+                        <button class="copy-btn" onclick="copyText()">📋 Copy</button>
+                    </div>
+                    <div id="output" class="output">Your writing will appear here...</div>
+                </div>
+            </div>
+        </div>
 
 
 
-    <footer>© 2025 HeartNote AI — Designed with 💗 by Solulure Labs</footer>
-  </main>
+        <footer>© 2025 HeartNote AI — Designed with 💗 by Solulure Labs</footer>
+    </main>
 
-  <script>
-    const username = localStorage.getItem('heartnote_username');
-    if (username) {
-      document.getElementById('welcomeText').innerText = `Welcome, ${username} 💞`;
-    }
+    <script>
+        const username = localStorage.getItem('heartnote_username');
+        if (username) {
+            document.getElementById('welcomeText').innerText = `Welcome, ${username} 💞`;
+        }
 
 
-    function openTool(name) {
-      if (name === 'Dashboard') {
-        document.getElementById('workspaceView').classList.remove('active');
-        document.getElementById('libraryView').style.display = 'block';
-        document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
-        event.target.classList.add('active');
-        return;
-      }
-
-      document.getElementById('libraryView').style.display = 'none';
-      document.getElementById('workspaceView').classList.add('active');
-      document.getElementById('toolTitle').innerText = name;
-      document.getElementById('output').innerText = "Your writing will appear here...";
-      document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
-      event.target.classList.add('active');
-    }
-
-    function goBack() {
-      document.getElementById('workspaceView').classList.remove('active');
-      document.getElementById('libraryView').style.display = 'block';
-      document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
-      document.querySelector('.menu a').classList.add('active'); // dashboard active
-    }
-
-function generateContent() {
-  // 1. Robust Input Handling: Trim whitespace and define const variables
-  const name = document.getElementById('nameInput').value.trim() || 'someone special';
-  const desc = document.getElementById('descInput').value.trim() || 'your emotions';
-  // Use .trim() to handle accidental spaces like " medium "
-  const depth = document.getElementById('depthInput').value.toLowerCase().trim();
-  // Store the title once
-  const title = document.getElementById('toolTitle').innerText.toLowerCase();
-  const output = document.getElementById('output');
-
-  // Utility to select a random element from an array (Crucial for variability)
-  const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
-  const date = new Date().toLocaleDateString();
-  const signature = '\n💗 HeartNote AI';
-
-  // Basic tone function depends on emotional depth
-  function tone(light, medium, deep) {
-    // Pass arrays and select a random element for non-repetition
-    if (depth === 'light') return getRandom(light);
-    if (depth === 'medium') return getRandom(medium);
-    // If input is 'deep' OR any other invalid value, default to the deep template
-    return getRandom(deep);
+function openTool(name) {
+  if (name === 'Dashboard') {
+    document.getElementById('workspaceView').classList.remove('active');
+    document.getElementById('libraryView').style.display = 'block';
+    showRecents();
+    return;
   }
 
-  let message = '';
+  // Hide dashboard & show workspace
+  document.getElementById('libraryView').style.display = 'none';
+  document.getElementById('workspaceView').classList.add('active');
+  document.getElementById('toolTitle').innerText = name;
 
-  // --- 🌤️ Reflection Mode (Enhanced Tone) ---
-  if (title.includes('reflection')) {
-    const opening = tone(
-      // Light
-      [`I'm pausing to let the weight of **${desc}** settle gently. Sometimes, the softest moments hold the clearest answers, reminding me that even today, I am moving forward with ${name}.`,
-       `A quiet moment to appreciate **${desc}**. Instead of rushing, I choose acceptance, which helps me see my path with ${name} clearly.`],
-      // Medium
-      [`Thinking deeply about **${desc}** and ${name}, I realize how much energy goes into resisting what is. True clarity isn't about solving every problem right now, but about observing the process itself.`,
-       `Reflecting on **${desc}**, I understand that complexity is part of growth. I am charting the emotional space and choosing to move forward with ${name}'s presence in mind.`],
-      // Deep
-      [`In the quiet echo of **${desc}** and ${name}, I find a profound lesson. This challenge is revealing a strength I didn't know I had, shaping the core of what I’m still learning to understand about myself and my purpose.`,
-       `The impact of **${desc}** is undeniable. I am using this experience as a catalyst, searching for the core truth that defines my deepest commitment and connection to ${name}.`]
-    );
-    const closing = tone(
-      // Light
-      [`Maybe the goal isn’t speed, but simply being present in the moment with ${name}.`, `I am gentle with myself as I navigate this, knowing ${name} is here.`],
-      // Medium
-      [`Maybe true calm isn’t the absence of chaos—it’s seeing clearly through it, with ${name}.`, `I honor the complexity of this feeling and embrace the clarity it brings.`],
-      // Deep
-      [`Even in the greatest chaos, the deepest part of my intention stays gentle and true because of ${name}.`, `I carry the profound lesson of this moment with me into the silence, dedicated to ${name}.`]
-    );
-    message = `${opening}\n\n${closing}`;
-  }
-  
-  // --- 📔 Journal Mode (Enhanced Tone) ---
-  else if (title.includes('journal')) {
-    const start = tone(
-      // Light
-      [`It was a gentle day. **${desc}** stayed on my mind, but I was able to manage it by focusing on small, controllable steps. I feel a quiet sense of release now, thanks to ${name}.`,
-       `I’m writing this to remember the small joys. Even with **${desc}** present, I found a moment of simple peace regarding ${name}.`],
-      // Medium
-      [`Today, **${desc}** brought up some complex feelings, making me think about my personal boundaries and how I’m growing with ${name}. I'm exploring the difficulty without judgment.`,
-       `I am processing the full weight of **${desc}**. This requires honesty and patience, but I believe the growth I seek regarding ${name} is on the other side of this challenge.`],
-      // Deep
-      [`This entry is dedicated to processing **${desc}**. This situation challenged me at my core, but every challenge teaches something essential and real about who I am and what I value in my connection to ${name}.`,
-       `The profound impact of **${desc}** has shifted my perspective. I am charting new emotional territory and embracing the raw intensity of this realization about ${name}.`]
-    );
-    const end = tone(
-      // Light
-      [`I’ll rest tonight knowing I navigated today with kindness and did enough for ${name}.`, `A restful night awaits, carrying only the necessary lessons from today about ${name}.`],
-      // Medium
-      [`Tomorrow is a new start—I'll carry the lessons from **${desc}** gently into the morning for ${name}.`, `I am committed to showing up with intention tomorrow, armed with this self-awareness.`],
-      // Deep
-      [`I might not have all the answers right now, but I’m proud of the emotional space I’ve carved out to process this deep feeling for ${name}.`, `I honor the profound strength it takes to face this truth and choose self-compassion.`]
-    );
-    message = `Date: ${date}\n\n${start}\n\n${end}`;
-  }
-  
-  // --- 💬 Note Mode (Enhanced Tone) ---
-  else if (title.includes('notes')) {
-    message = tone(
-      // Light
-      [`A quiet reminder: Breathe. You have handled **${desc}** with grace, and you are already doing enough. Be kind to yourself today, ${name}.`,
-       `A gentle check-in: It's okay to slow down. The pace of your life is yours to set, especially when dealing with **${desc}** regarding ${name}.`],
-      // Medium
-      [`Remember your focus. Progress isn’t loud, it’s consistent. Keep going quietly, especially in the face of **${desc}**—your steady effort for ${name} matters.`,
-       `You have the clarity you need. Filter the noise and focus only on the next gentle step forward regarding **${desc}** and ${name}.`],
-      // Deep
-      [`The deepest confidence comes from within. Your calm strength is the loudest voice in the room, capable of navigating anything related to **${desc}** and ${name}.`,
-       `This challenge around **${desc}** is refining your character. Embrace the process; your true strength for ${name} is revealed in the quiet intensity of this moment.`]
-    );
-  }
+  // 🧠 Load saved data for this tool
+  const recents = JSON.parse(localStorage.getItem("recents")) || [];
+  const found = recents.find(r => r.name === name);
 
-  // --- 🌿 Affirmation Mode (Enhanced Tone) ---
-  else if (title.includes('affirmation')) {
-    message = tone(
-      // Light
-      [`I'm learning to trust myself with the discomfort of **${desc}**. I am safe, even when I feel unsure about ${name}.`,
-       `My connection to peace is greater than the uncertainty of **${desc}**. I choose calm for myself and ${name}.`],
-      // Medium
-      [`I can create something good each day, no matter how small, and that effort is enough to handle **${desc}** with dignity for ${name}.`,
-       `I am flexible and resilient. I adapt my plans with grace as I navigate the complexity of **${desc}** regarding ${name}.`],
-      // Deep
-      [`I am stronger than I think. Every setback and difficulty related to **${desc}** becomes a clear direction toward my highest self and my relationship with ${name}.`,
-       `I welcome the challenge of **${desc}** because it allows me to embody my deepest power and commitment to ${name}.`]
-    );
+  if (found) {
+    document.getElementById("nameInput").value = found.nameInput || "";
+    document.getElementById("descInput").value = found.descInput || "";
+    document.getElementById("depthInput").value = found.depthInput || "light";
+    document.getElementById("output").innerText = found.output || "Your writing will appear here...";
+  } else {
+    // Default empty
+    document.getElementById("nameInput").value = "";
+    document.getElementById("descInput").value = "";
+    document.getElementById("depthInput").value = "light";
+    document.getElementById("output").innerText = "Your writing will appear here...";
   }
-
-  // --- ✉️ Letter Mode (Enhanced Tone) ---
-  else if (title.includes('letters')) {
-    // Use the name input for salutation
-    const recipient = name.trim().replace(/^a\s+/i, ''); // Simple cleanup for generic roles like 'a mentor'
-    
-    const salutation = tone(
-      [`Dear ${recipient},`, `Hi ${recipient},`],
-      [`To the person who means the world to me,`, `Dear valued ${recipient},`],
-      [`My Dearest ${recipient},`, `To my profound companion, ${recipient},`]
-    );
-
-    const body = tone(
-      // Light
-      [`I've been giving a lot of thought to **${desc}**. Sometimes the easiest way to solve something is just to talk about it openly. I wanted to send this note to bridge the distance and let you know that I'm here, and I genuinely care. I believe we can work things out with a little kindness.`,
-       `This feeling has been on my mind, and I wanted to reach out simply to say thank you for your presence. You help me find clarity, even when **${desc}** feels heavy.`],
-      // Medium
-      [`It's often hard to find the right words, especially when dealing with **${desc}**. I truly regret any confusion or distress I may have caused. I value our connection and I am focused on making things right and earning back your trust. My actions didn't reflect the respect I have for you.`,
-       `I am reaching out because our connection is important. I want to discuss the matter of **${desc}** openly and with sincerity. My intention is to understand your perspective completely.`],
-      // Deep
-      [`In the quiet moments, all I can think about is **${desc}** and the regret that follows. I am deeply sorry. My intention was never to cause you pain, and seeing how my words/actions impacted you has given me a lot of perspective. Please know that this apology comes from the deepest part of my heart. I am committed to true change.`,
-       `You have changed my world. The intensity of **${desc}** only reinforces the profound strength of our bond. Thank you for teaching me the deepest meaning of care.`]
-    );
-
-    const closing = tone(
-      [`Looking forward to better moments,`, `With warmth and care,`],
-      [`With sincerity and hope for the future,`, `With steady commitment,`],
-      [`With profound love and commitment,`, `Yours always,`]
-    );
-    
-    message = `${salutation}\n\n${body}\n\n${closing}${signature}`;
-  }
-
-  // --- 📝 Poem Mode (Enhanced Tone) ---
-  else if (title.includes('poems')) {
-    const verse1 = tone(
-      [`When **${desc}** starts to whisper near, \nLike moonlight touching the still air,`, `The gentle rain on **${desc}** falls,\nAnd quiets every busy call.`],
-      [`In the deep rhythm where **${desc}** resides, \nA constant tide the heart cannot refuse,`, `The shadows lift, the light takes hold,\nUpon the story **${desc}** told.`],
-      [`The memory of **${desc}** is a truth untold, \nA hidden seam within the soul's old fold,`, `A burning star, a solemn, sacred space,\nThe fearless mirror showing **${desc}**'s grace.`]
-    );
-    const verse2 = tone(
-      [`A quiet grace that pauses time,\nAnd turns the simple thought to rhyme.`, `A soft reflection in the blue,\nOf every moment shared with ${name}.`],
-      [`It moves the spirit through calm and fire,\nWriting its own melody of desire.`, `The choice is clear, the focus bright,\nIlluminating purpose in the night for ${name}.`],
-      [`It is the silence that defines the space,\nThe courageous commitment found in this place.`, `It is the core, the absolute command,\nThe destiny held in your own hand for ${name}.`]
-    );
-    message = `${verse1}\n${verse2}`;
-  }
-
-  // --- 📚 Story Mode (Enhanced Tone) ---
-  else if (title.includes('story')) {
-    const opening = tone(
-      [`It began one quiet afternoon with just a small seed of an idea about **${desc}**. The protagonist, ${name}, felt a faint pull toward a dream he couldn't name, a soft certainty that something significant was just beyond the horizon.`,
-       `The story of **${desc}** starts simply, with ${name} discovering a gentle, yet persistent, inspiration that nudged them toward an unknown path.`],
-      [`The true journey of **${desc}** wasn't easy; it started in a place of necessary conflict. ${name} realized they could only move forward by confronting a shared past—a moment of decisive action that would define their future.`,
-       `The conflict was not external but internal, as ${name} struggled to reconcile their ambition with the weight of **${desc}**, leading to a pivotal moment of choice.`],
-      [`Long ago, the quest for **${desc}** was a profound, almost spiritual undertaking. It involved ${name} trekking across the Glass Mountains, driven by a solitary, burning conviction that the greatest rewards require the deepest sacrifice.`,
-       `This epic saga centered entirely on the mastery of **${desc}**, pushing ${name} to the limits of human endurance and revealing a powerful, essential truth about the world.`]
-    );
-    const climax = tone(
-      [`The resolution arrived with a gentle understanding, proving that vulnerability is its own strength.`, `The gentle twist in the plot proved that the simplest actions often yield the most profound results for ${name}.`],
-      [`The climax required courage—a choice made not in comfort, but in clarity, securing the future ${name} needed.`, `The resolution was balanced, honoring the past struggle while paving a clear, purposeful path forward for ${name}.`],
-      [`And so, the profound search concluded, making the concept of **${desc}** a lasting testament to enduring human will.`, `The saga ended with the revelation that the core of **${desc}** was not the answer, but the profound question itself for ${name}.`]
-    );
-    message = `${opening}\n\n${climax}`;
-  }
-
-  // --- 💖 Quote Mode (Enhanced Tone) ---
-  else if (title.includes('quotes')) {
-    message = tone(
-      [`"The quiet strength of **${desc}** is in the small, consistent steps we take every day with ${name}."`, `"Happiness is a gentle **${desc}** shared with ${name}, found in simple kindness. "`],
-      [`"True alignment begins when we realize that **${desc}** is not a destination, but the compass itself for ${name}."`, `"Meaning is found in the exploration of **${desc}**, not in its immediate resolution for ${name}."`],
-      [`"To truly understand the depth of human connection, one must first confront the powerful truth of **${desc}** and ${name}."`, `"The final word on **${desc}** is always self-compassion, leading to infinite strength for ${name}."`]
-    );
-  }
-  
-  // Default fallback
-  else {
-    // Better default message for clarity
-    message = `Dear ${name},\n\nThis is a default piece capturing **${desc}**. (Mode: ${title || 'Unknown'}, Depth: ${depth || 'Unknown'})\n\nWith warmth,${signature}`;
-  }
-
-  output.innerText = message;
-}
-    // 📋 Copy Function
-function copyText() {
-  const text = document.getElementById('output').innerText;
-  navigator.clipboard.writeText(text);
-  alert("Copied to clipboard 💗");
-}
-    function currentMode() {
-  return document.getElementById("toolTitle").innerText.trim().toLowerCase();
 }
 
+function saveRecent(toolName) {
+  let recents = JSON.parse(localStorage.getItem("recents")) || [];
 
-function suggestName() {
-  // Assuming currentMode() is defined and returns the mode string (e.g., 'reflection', 'letters')
-  const mode = currentMode();
-  let ideas = [];
-
-  // These ideas are designed to work well as the "who/what" the content is FOR (the nameInput).
-  switch (mode) {
-    case "reflection":
-      // Topics for deep thought and self-improvement
-      ideas = ["my journey", "a lesson learned", "my true self", "a difficult emotion", "my goals"];
-      break;
-    case "journal":
-      // Concrete people/things/events from the day
-      ideas = ["my current mood", "a challenging task", "something I’m grateful for", "a small victory", "the future"];
-      break;
-    case "notes":
-      // Targets for quick advice or reminders
-      ideas = ["myself", "a close friend", "a quiet moment", "my current goals", "a core value"];
-      break;
-    case "affirmation":
-      // Concepts to affirm oneself around
-      ideas = ["self-worth", "courage", "forgiveness", "hope", "my strength"];
-      break;
-    case "letters":
-      // Specific recipients
-      ideas = ["someone I miss", "a mentor", "my past self", "a loved one", "the future version of me"];
-      break;
-    case "poems":
-      // Subjects for poetic expression
-      ideas = ["the rain", "the moonlight", "change", "love", "a silent moment"];
-      break;
-    case "story":
-      // Protagonist concepts
-      ideas = ["a new beginning", "a journey of hope", "a dreamer", "a forgotten promise", "a hero"];
-      break;
-    case "quotes":
-      // Abstract ideas or concepts to capture
-      ideas = ["resilience", "kindness", "truth", "time", "wisdom"];
-      break;
-    default:
-      ideas = ["life", "growth", "connection", "peace", "today"];
-  }
-
-  document.getElementById("nameInput").value =
-    ideas[Math.floor(Math.random() * ideas.length)];
-}
-
-// 📝 Feeling suggestions based on mode
-function suggestFeeling() {
-  const mode = currentMode();
-  let emotions = [];
-
-  switch (mode) {
-    case "reflection":
-      emotions = [
-        "a sense of calm returning",
-        "growth through mistakes",
-        "clarity after confusion",
-        "learning patience"
-      ];
-      break;
-    case "journal":
-      emotions = [
-        "feeling proud of my progress",
-        "overwhelmed but still hopeful",
-        "curious about what’s next",
-        "grateful for small steps"
-      ];
-      break;
-    case "notes":
-      emotions = [
-        "hope for tomorrow",
-        "gentle self-reminder",
-        "a spark of confidence",
-        "inner calm returning"
-      ];
-      break;
-    case "affirmation":
-      emotions = [
-        "trust in my strength",
-        "peace in who I am",
-        "confidence to keep going",
-        "healing energy flowing"
-      ];
-      break;
-    case "letters":
-      emotions = [
-        "forgiveness and closure",
-        "unspoken gratitude",
-        "love with sincerity",
-        "regret turning to understanding"
-      ];
-      break;
-    case "poems":
-      emotions = [
-        "the ache of nostalgia",
-        "soft wonder",
-        "love that lingers",
-        "melancholy beauty"
-      ];
-      break;
-    case "story":
-      emotions = [
-        "hope in adversity",
-        "a turning point of courage",
-        "transformation and healing",
-        "finding meaning in struggle"
-      ];
-      break;
-    case "quotes":
-      emotions = [
-        "timeless wisdom",
-        "the beauty of resilience",
-        "the art of letting go",
-        "truth found in stillness"
-      ];
-      break;
-    default:
-      emotions = [
-        "quiet optimism",
-        "simple gratitude",
-        "inner peace",
-        "gentle reflection"
-      ];
-  }
-
-  document.getElementById("descInput").value =
-    emotions[Math.floor(Math.random() * emotions.length)];
-}
-  document.addEventListener("DOMContentLoaded", () => {
-  const searchInput = document.getElementById("searchInput");
-  const toolList = document.getElementById("toolList");
-
-  if (!searchInput || !toolList) return; // safety check
-
-  const tools = toolList.querySelectorAll(".tool-item");
-
-  // Hide tool list initially
-  toolList.style.display = "none";
-
-  searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase().trim();
-
-    if (query === "") {
-      toolList.style.display = "none";
-      return;
-    }
-
-    let matchFound = false;
-
-    tools.forEach((tool) => {
-      const text = tool.textContent.toLowerCase();
-      if (text.includes(query)) {
-        tool.style.display = "block";
-        matchFound = true;
-      } else {
-        tool.style.display = "none";
-      }
-    });
-
-    // Show or hide tool list based on matches
-    toolList.style.display = matchFound ? "grid" : "none";
-  });
-
-  // ✅ Hide tool list when user clicks a tool
-  tools.forEach((tool) => {
-    tool.addEventListener("click", () => {
-      toolList.style.display = "none";
-      searchInput.value = ""; // optional: clear search after click
-    });
-  });
-});
-    document.querySelectorAll('.dropdown-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const dropdown = button.nextElementSibling;
-    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-  });
-});
-  window.addEventListener("DOMContentLoaded", function () {
-  const mode = localStorage.getItem("mode");
-  const heartMenu = document.querySelectorAll(".menu-group")[1]; // second group (Heart & Emotion)
-
-  if (mode === "under18") {
-    // Hide romantic/emotional tools
-    heartMenu.style.display = "none";
-  } else if (mode === "adult") {
-    // Show all tools
-    heartMenu.style.display = "block";
-  }
-});
-  window.addEventListener("DOMContentLoaded", function () {
-  const mode = localStorage.getItem("mode");
-  const cardsContainer = document.querySelector(".cards");
-  const isMobile = window.innerWidth <= 768; // detect small screen
-  cardsContainer.innerHTML = ""; // clear cards
-
-  // ✨ Recommendation system (for simple future use)
-  const recommend = (toolName, description) => {
-    console.log(`Recommended tool: ${toolName} → ${description}`);
+  // Get current form data
+  const data = {
+    name: toolName,
+    icon: getToolIcon(toolName),
+    time: new Date().toLocaleString(),
+    nameInput: document.getElementById("nameInput").value,
+    descInput: document.getElementById("descInput").value,
+    depthInput: document.getElementById("depthInput").value,
+    output: document.getElementById("output").innerText
   };
 
-  if (mode === "under18") {
-    // 🧒 Under 18
-    const under18Cards = [
-      { icon: "📔", title: "Mood Journal", desc: "Write your thoughts and daily reflections.", tool: "Journal" },
-      { icon: "📝", title: "Notes", desc: "Keep small thoughts or study ideas safely.", tool: "Notes" },
-      { icon: "🌈", title: "Affirmation Creator", desc: "Positive words to strengthen your day.", tool: "Affirmation" },
-      { icon: "🌿", title: "Reflection", desc: "Think deeply about your goals and feelings.", tool: "Reflection" }
-    ];
+  // Remove duplicates
+  recents = recents.filter(r => r.name !== toolName);
 
-    under18Cards.forEach(card => {
-      recommend(card.title, card.desc);
-      cardsContainer.innerHTML += `
+  // Add to top
+  recents.unshift(data);
+
+  // Limit to 5 items
+  recents = recents.slice(0, 5);
+
+  localStorage.setItem("recents", JSON.stringify(recents));
+}
+
+function getToolIcon(name) {
+  const icons = {
+    "Letters": "💌",
+    "Poems": "🪶",
+    "Story": "✨",
+    "Quotes": "💭",
+    "Journal": "📔",
+    "Notes": "📝",
+    "Affirmation": "🌈",
+    "Reflection": "🌿"
+  };
+  return icons[name] || "🪶";
+}
+
+
+
+// 🧹 Delete individual recent
+function deleteRecent(toolName) {
+  let recents = JSON.parse(localStorage.getItem("recents")) || [];
+  recents = recents.filter(r => r.name !== toolName);
+  localStorage.setItem("recents", JSON.stringify(recents));
+  showRecents();
+}
+
+// 🕒 Show recents on dashboard
+function showRecents() {
+  const recents = JSON.parse(localStorage.getItem("recents")) || [];
+  const container = document.getElementById("recentCards");
+  container.innerHTML = "";
+
+  if (recents.length === 0) {
+    container.innerHTML = `<p class="no-recents">No recent activity yet.</p>`;
+    return;
+  }
+
+  recents.forEach(r => {
+    container.innerHTML += `
+      <div class="recent-card">
+        <div class="recent-left" onclick="openTool('${r.name}')">
+          <span class="recent-icon">${r.icon}</span>
+          <div class="recent-text">
+            <p>${r.name}</p>
+            <small>${r.time}</small>
+          </div>
+        </div>
+        <button class="delete-btn" onclick="deleteRecent('${r.name}')">❌</button>
+      </div>
+    `;
+  });
+}
+
+window.addEventListener("DOMContentLoaded", showRecents);
+
+      function goBack() {
+  const currentTool = document.getElementById("toolTitle").innerText;
+  saveRecent(currentTool); // Save before leaving
+
+  document.getElementById('workspaceView').classList.remove('active');
+  document.getElementById('libraryView').style.display = 'block';
+  showRecents();
+}
+
+
+        function generateContent() {
+            // 1. Robust Input Handling: Trim whitespace and define const variables
+            const name = document.getElementById('nameInput').value.trim() || 'someone special';
+            const desc = document.getElementById('descInput').value.trim() || 'your emotions';
+            // Use .trim() to handle accidental spaces like " medium "
+            const depth = document.getElementById('depthInput').value.toLowerCase().trim();
+            // Store the title once
+            const title = document.getElementById('toolTitle').innerText.toLowerCase();
+            const output = document.getElementById('output');
+
+            // Utility to select a random element from an array (Crucial for variability)
+            const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            const date = new Date().toLocaleDateString();
+            const signature = '\n💗 HeartNote AI';
+
+            // Basic tone function depends on emotional depth
+            function tone(light, medium, deep) {
+                // Pass arrays and select a random element for non-repetition
+                if (depth === 'light') return getRandom(light);
+                if (depth === 'medium') return getRandom(medium);
+                // If input is 'deep' OR any other invalid value, default to the deep template
+                return getRandom(deep);
+            }
+
+            let message = '';
+
+            // --- 🌤️ Reflection Mode (Enhanced Tone) ---
+            if (title.includes('reflection')) {
+                const opening = tone(
+                    // Light
+                    [`I'm pausing to let the weight of **${desc}** settle gently. Sometimes, the softest moments hold the clearest answers, reminding me that even today, I am moving forward with ${name}.`,
+                    `A quiet moment to appreciate **${desc}**. Instead of rushing, I choose acceptance, which helps me see my path with ${name} clearly.`],
+                    // Medium
+                    [`Thinking deeply about **${desc}** and ${name}, I realize how much energy goes into resisting what is. True clarity isn't about solving every problem right now, but about observing the process itself.`,
+                    `Reflecting on **${desc}**, I understand that complexity is part of growth. I am charting the emotional space and choosing to move forward with ${name}'s presence in mind.`],
+                    // Deep
+                    [`In the quiet echo of **${desc}** and ${name}, I find a profound lesson. This challenge is revealing a strength I didn't know I had, shaping the core of what I’m still learning to understand about myself and my purpose.`,
+                    `The impact of **${desc}** is undeniable. I am using this experience as a catalyst, searching for the core truth that defines my deepest commitment and connection to ${name}.`]
+                );
+                const closing = tone(
+                    // Light
+                    [`Maybe the goal isn’t speed, but simply being present in the moment with ${name}.`, `I am gentle with myself as I navigate this, knowing ${name} is here.`],
+                    // Medium
+                    [`Maybe true calm isn’t the absence of chaos—it’s seeing clearly through it, with ${name}.`, `I honor the complexity of this feeling and embrace the clarity it brings.`],
+                    // Deep
+                    [`Even in the greatest chaos, the deepest part of my intention stays gentle and true because of ${name}.`, `I carry the profound lesson of this moment with me into the silence, dedicated to ${name}.`]
+                );
+                message = `${opening}\n\n${closing}`;
+            }
+
+            // --- 📔 Journal Mode (Enhanced Tone) ---
+            else if (title.includes('journal')) {
+                const start = tone(
+                    // Light
+                    [`It was a gentle day. **${desc}** stayed on my mind, but I was able to manage it by focusing on small, controllable steps. I feel a quiet sense of release now, thanks to ${name}.`,
+                    `I’m writing this to remember the small joys. Even with **${desc}** present, I found a moment of simple peace regarding ${name}.`],
+                    // Medium
+                    [`Today, **${desc}** brought up some complex feelings, making me think about my personal boundaries and how I’m growing with ${name}. I'm exploring the difficulty without judgment.`,
+                    `I am processing the full weight of **${desc}**. This requires honesty and patience, but I believe the growth I seek regarding ${name} is on the other side of this challenge.`],
+                    // Deep
+                    [`This entry is dedicated to processing **${desc}**. This situation challenged me at my core, but every challenge teaches something essential and real about who I am and what I value in my connection to ${name}.`,
+                    `The profound impact of **${desc}** has shifted my perspective. I am charting new emotional territory and embracing the raw intensity of this realization about ${name}.`]
+                );
+                const end = tone(
+                    // Light
+                    [`I’ll rest tonight knowing I navigated today with kindness and did enough for ${name}.`, `A restful night awaits, carrying only the necessary lessons from today about ${name}.`],
+                    // Medium
+                    [`Tomorrow is a new start—I'll carry the lessons from **${desc}** gently into the morning for ${name}.`, `I am committed to showing up with intention tomorrow, armed with this self-awareness.`],
+                    // Deep
+                    [`I might not have all the answers right now, but I’m proud of the emotional space I’ve carved out to process this deep feeling for ${name}.`, `I honor the profound strength it takes to face this truth and choose self-compassion.`]
+                );
+                message = `Date: ${date}\n\n${start}\n\n${end}`;
+            }
+
+            // --- 💬 Note Mode (Enhanced Tone) ---
+            else if (title.includes('notes')) {
+                message = tone(
+                    // Light
+                    [`A quiet reminder: Breathe. You have handled **${desc}** with grace, and you are already doing enough. Be kind to yourself today, ${name}.`,
+                    `A gentle check-in: It's okay to slow down. The pace of your life is yours to set, especially when dealing with **${desc}** regarding ${name}.`],
+                    // Medium
+                    [`Remember your focus. Progress isn’t loud, it’s consistent. Keep going quietly, especially in the face of **${desc}**—your steady effort for ${name} matters.`,
+                    `You have the clarity you need. Filter the noise and focus only on the next gentle step forward regarding **${desc}** and ${name}.`],
+                    // Deep
+                    [`The deepest confidence comes from within. Your calm strength is the loudest voice in the room, capable of navigating anything related to **${desc}** and ${name}.`,
+                    `This challenge around **${desc}** is refining your character. Embrace the process; your true strength for ${name} is revealed in the quiet intensity of this moment.`]
+                );
+            }
+
+            // --- 🌿 Affirmation Mode (Enhanced Tone) ---
+            else if (title.includes('affirmation')) {
+                message = tone(
+                    // Light
+                    [`I'm learning to trust myself with the discomfort of **${desc}**. I am safe, even when I feel unsure about ${name}.`,
+                    `My connection to peace is greater than the uncertainty of **${desc}**. I choose calm for myself and ${name}.`],
+                    // Medium
+                    [`I can create something good each day, no matter how small, and that effort is enough to handle **${desc}** with dignity for ${name}.`,
+                    `I am flexible and resilient. I adapt my plans with grace as I navigate the complexity of **${desc}** regarding ${name}.`],
+                    // Deep
+                    [`I am stronger than I think. Every setback and difficulty related to **${desc}** becomes a clear direction toward my highest self and my relationship with ${name}.`,
+                    `I welcome the challenge of **${desc}** because it allows me to embody my deepest power and commitment to ${name}.`]
+                );
+            }
+
+            // --- ✉️ Letter Mode (Enhanced Tone) ---
+            else if (title.includes('letters')) {
+                // Use the name input for salutation
+                const recipient = name.trim().replace(/^a\s+/i, ''); // Simple cleanup for generic roles like 'a mentor'
+
+                const salutation = tone(
+                    [`Dear ${recipient},`, `Hi ${recipient},`],
+                    [`To the person who means the world to me,`, `Dear valued ${recipient},`],
+                    [`My Dearest ${recipient},`, `To my profound companion, ${recipient},`]
+                );
+
+                const body = tone(
+                    // Light
+                    [`I've been giving a lot of thought to **${desc}**. Sometimes the easiest way to solve something is just to talk about it openly. I wanted to send this note to bridge the distance and let you know that I'm here, and I genuinely care. I believe we can work things out with a little kindness.`,
+                    `This feeling has been on my mind, and I wanted to reach out simply to say thank you for your presence. You help me find clarity, even when **${desc}** feels heavy.`],
+                    // Medium
+                    [`It's often hard to find the right words, especially when dealing with **${desc}**. I truly regret any confusion or distress I may have caused. I value our connection and I am focused on making things right and earning back your trust. My actions didn't reflect the respect I have for you.`,
+                    `I am reaching out because our connection is important. I want to discuss the matter of **${desc}** openly and with sincerity. My intention is to understand your perspective completely.`],
+                    // Deep
+                    [`In the quiet moments, all I can think about is **${desc}** and the regret that follows. I am deeply sorry. My intention was never to cause you pain, and seeing how my words/actions impacted you has given me a lot of perspective. Please know that this apology comes from the deepest part of my heart. I am committed to true change.`,
+                    `You have changed my world. The intensity of **${desc}** only reinforces the profound strength of our bond. Thank you for teaching me the deepest meaning of care.`]
+                );
+
+                const closing = tone(
+                    [`Looking forward to better moments,`, `With warmth and care,`],
+                    [`With sincerity and hope for the future,`, `With steady commitment,`],
+                    [`With profound love and commitment,`, `Yours always,`]
+                );
+
+                message = `${salutation}\n\n${body}\n\n${closing}${signature}`;
+            }
+
+            // --- 📝 Poem Mode (Enhanced Tone) ---
+            else if (title.includes('poems')) {
+                const verse1 = tone(
+                    [`When **${desc}** starts to whisper near, \nLike moonlight touching the still air,`, `The gentle rain on **${desc}** falls,\nAnd quiets every busy call.`],
+                    [`In the deep rhythm where **${desc}** resides, \nA constant tide the heart cannot refuse,`, `The shadows lift, the light takes hold,\nUpon the story **${desc}** told.`],
+                    [`The memory of **${desc}** is a truth untold, \nA hidden seam within the soul's old fold,`, `A burning star, a solemn, sacred space,\nThe fearless mirror showing **${desc}**'s grace.`]
+                );
+                const verse2 = tone(
+                    [`A quiet grace that pauses time,\nAnd turns the simple thought to rhyme.`, `A soft reflection in the blue,\nOf every moment shared with ${name}.`],
+                    [`It moves the spirit through calm and fire,\nWriting its own melody of desire.`, `The choice is clear, the focus bright,\nIlluminating purpose in the night for ${name}.`],
+                    [`It is the silence that defines the space,\nThe courageous commitment found in this place.`, `It is the core, the absolute command,\nThe destiny held in your own hand for ${name}.`]
+                );
+                message = `${verse1}\n${verse2}`;
+            }
+
+            // --- 📚 Story Mode (Enhanced Tone) ---
+            else if (title.includes('story')) {
+                const opening = tone(
+                    [`It began one quiet afternoon with just a small seed of an idea about **${desc}**. The protagonist, ${name}, felt a faint pull toward a dream he couldn't name, a soft certainty that something significant was just beyond the horizon.`,
+                    `The story of **${desc}** starts simply, with ${name} discovering a gentle, yet persistent, inspiration that nudged them toward an unknown path.`],
+                    [`The true journey of **${desc}** wasn't easy; it started in a place of necessary conflict. ${name} realized they could only move forward by confronting a shared past—a moment of decisive action that would define their future.`,
+                    `The conflict was not external but internal, as ${name} struggled to reconcile their ambition with the weight of **${desc}**, leading to a pivotal moment of choice.`],
+                    [`Long ago, the quest for **${desc}** was a profound, almost spiritual undertaking. It involved ${name} trekking across the Glass Mountains, driven by a solitary, burning conviction that the greatest rewards require the deepest sacrifice.`,
+                    `This epic saga centered entirely on the mastery of **${desc}**, pushing ${name} to the limits of human endurance and revealing a powerful, essential truth about the world.`]
+                );
+                const climax = tone(
+                    [`The resolution arrived with a gentle understanding, proving that vulnerability is its own strength.`, `The gentle twist in the plot proved that the simplest actions often yield the most profound results for ${name}.`],
+                    [`The climax required courage—a choice made not in comfort, but in clarity, securing the future ${name} needed.`, `The resolution was balanced, honoring the past struggle while paving a clear, purposeful path forward for ${name}.`],
+                    [`And so, the profound search concluded, making the concept of **${desc}** a lasting testament to enduring human will.`, `The saga ended with the revelation that the core of **${desc}** was not the answer, but the profound question itself for ${name}.`]
+                );
+                message = `${opening}\n\n${climax}`;
+            }
+
+            // --- 💖 Quote Mode (Enhanced Tone) ---
+            else if (title.includes('quotes')) {
+                message = tone(
+                    [`"The quiet strength of **${desc}** is in the small, consistent steps we take every day with ${name}."`, `"Happiness is a gentle **${desc}** shared with ${name}, found in simple kindness. "`],
+                    [`"True alignment begins when we realize that **${desc}** is not a destination, but the compass itself for ${name}."`, `"Meaning is found in the exploration of **${desc}**, not in its immediate resolution for ${name}."`],
+                    [`"To truly understand the depth of human connection, one must first confront the powerful truth of **${desc}** and ${name}."`, `"The final word on **${desc}** is always self-compassion, leading to infinite strength for ${name}."`]
+                );
+            }
+
+            // Default fallback
+            else {
+                // Better default message for clarity
+                message = `Dear ${name},\n\nThis is a default piece capturing **${desc}**. (Mode: ${title || 'Unknown'}, Depth: ${depth || 'Unknown'})\n\nWith warmth,${signature}`;
+            }
+
+            output.innerText = message;
+        }
+        // 📋 Copy Function
+        function copyText() {
+            const text = document.getElementById('output').innerText;
+            navigator.clipboard.writeText(text);
+            alert("Copied to clipboard 💗");
+        }
+        function currentMode() {
+            return document.getElementById("toolTitle").innerText.trim().toLowerCase();
+        }
+
+
+        function suggestName() {
+            // Assuming currentMode() is defined and returns the mode string (e.g., 'reflection', 'letters')
+            const mode = currentMode();
+            let ideas = [];
+
+            // These ideas are designed to work well as the "who/what" the content is FOR (the nameInput).
+            switch (mode) {
+                case "reflection":
+                    // Topics for deep thought and self-improvement
+                    ideas = ["my journey", "a lesson learned", "my true self", "a difficult emotion", "my goals"];
+                    break;
+                case "journal":
+                    // Concrete people/things/events from the day
+                    ideas = ["my current mood", "a challenging task", "something I’m grateful for", "a small victory", "the future"];
+                    break;
+                case "notes":
+                    // Targets for quick advice or reminders
+                    ideas = ["myself", "a close friend", "a quiet moment", "my current goals", "a core value"];
+                    break;
+                case "affirmation":
+                    // Concepts to affirm oneself around
+                    ideas = ["self-worth", "courage", "forgiveness", "hope", "my strength"];
+                    break;
+                case "letters":
+                    // Specific recipients
+                    ideas = ["someone I miss", "a mentor", "my past self", "a loved one", "the future version of me"];
+                    break;
+                case "poems":
+                    // Subjects for poetic expression
+                    ideas = ["the rain", "the moonlight", "change", "love", "a silent moment"];
+                    break;
+                case "story":
+                    // Protagonist concepts
+                    ideas = ["a new beginning", "a journey of hope", "a dreamer", "a forgotten promise", "a hero"];
+                    break;
+                case "quotes":
+                    // Abstract ideas or concepts to capture
+                    ideas = ["resilience", "kindness", "truth", "time", "wisdom"];
+                    break;
+                default:
+                    ideas = ["life", "growth", "connection", "peace", "today"];
+            }
+
+            document.getElementById("nameInput").value =
+                ideas[Math.floor(Math.random() * ideas.length)];
+        }
+
+        // 📝 Feeling suggestions based on mode
+        function suggestFeeling() {
+            const mode = currentMode();
+            let emotions = [];
+
+            switch (mode) {
+                case "reflection":
+                    emotions = [
+                        "a sense of calm returning",
+                        "growth through mistakes",
+                        "clarity after confusion",
+                        "learning patience"
+                    ];
+                    break;
+                case "journal":
+                    emotions = [
+                        "feeling proud of my progress",
+                        "overwhelmed but still hopeful",
+                        "curious about what’s next",
+                        "grateful for small steps"
+                    ];
+                    break;
+                case "notes":
+                    emotions = [
+                        "hope for tomorrow",
+                        "gentle self-reminder",
+                        "a spark of confidence",
+                        "inner calm returning"
+                    ];
+                    break;
+                case "affirmation":
+                    emotions = [
+                        "trust in my strength",
+                        "peace in who I am",
+                        "confidence to keep going",
+                        "healing energy flowing"
+                    ];
+                    break;
+                case "letters":
+                    emotions = [
+                        "forgiveness and closure",
+                        "unspoken gratitude",
+                        "love with sincerity",
+                        "regret turning to understanding"
+                    ];
+                    break;
+                case "poems":
+                    emotions = [
+                        "the ache of nostalgia",
+                        "soft wonder",
+                        "love that lingers",
+                        "melancholy beauty"
+                    ];
+                    break;
+                case "story":
+                    emotions = [
+                        "hope in adversity",
+                        "a turning point of courage",
+                        "transformation and healing",
+                        "finding meaning in struggle"
+                    ];
+                    break;
+                case "quotes":
+                    emotions = [
+                        "timeless wisdom",
+                        "the beauty of resilience",
+                        "the art of letting go",
+                        "truth found in stillness"
+                    ];
+                    break;
+                default:
+                    emotions = [
+                        "quiet optimism",
+                        "simple gratitude",
+                        "inner peace",
+                        "gentle reflection"
+                    ];
+            }
+
+            document.getElementById("descInput").value =
+                emotions[Math.floor(Math.random() * emotions.length)];
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById("searchInput");
+            const toolList = document.getElementById("toolList");
+
+            if (!searchInput || !toolList) return; // safety check
+
+            const tools = toolList.querySelectorAll(".tool-item");
+
+            // Hide tool list initially
+            toolList.style.display = "none";
+
+            searchInput.addEventListener("input", () => {
+                const query = searchInput.value.toLowerCase().trim();
+
+                if (query === "") {
+                    toolList.style.display = "none";
+                    return;
+                }
+
+                let matchFound = false;
+
+                tools.forEach((tool) => {
+                    const text = tool.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        tool.style.display = "block";
+                        matchFound = true;
+                    } else {
+                        tool.style.display = "none";
+                    }
+                });
+
+                // Show or hide tool list based on matches
+                toolList.style.display = matchFound ? "grid" : "none";
+            });
+
+            // ✅ Hide tool list when user clicks a tool
+            tools.forEach((tool) => {
+                tool.addEventListener("click", () => {
+                    toolList.style.display = "none";
+                    searchInput.value = ""; // optional: clear search after click
+                });
+            });
+        });
+        document.querySelectorAll('.dropdown-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const dropdown = button.nextElementSibling;
+                dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+            });
+        });
+        window.addEventListener("DOMContentLoaded", function () {
+            const mode = localStorage.getItem("mode");
+            const heartMenu = document.querySelectorAll(".menu-group")[1]; // second group (Heart & Emotion)
+
+            if (mode === "under18") {
+                // Hide romantic/emotional tools
+                heartMenu.style.display = "none";
+            } else if (mode === "adult") {
+                // Show all tools
+                heartMenu.style.display = "block";
+            }
+        });
+        window.addEventListener("DOMContentLoaded", function () {
+            const mode = localStorage.getItem("mode");
+            const cardsContainer = document.querySelector(".cards");
+            const isMobile = window.innerWidth <= 768; // detect small screen
+            cardsContainer.innerHTML = ""; // clear cards
+
+            // ✨ Recommendation system (for simple future use)
+            const recommend = (toolName, description) => {
+                console.log(`Recommended tool: ${toolName} → ${description}`);
+            };
+
+            if (mode === "under18") {
+                // 🧒 Under 18
+                const under18Cards = [
+                    { icon: "📔", title: "Mood Journal", desc: "Write your thoughts and daily reflections.", tool: "Journal" },
+                    { icon: "📝", title: "Notes", desc: "Keep small thoughts or study ideas safely.", tool: "Notes" },
+                    { icon: "🌈", title: "Affirmation Creator", desc: "Positive words to strengthen your day.", tool: "Affirmation" },
+                    { icon: "🌿", title: "Reflection", desc: "Think deeply about your goals and feelings.", tool: "Reflection" }
+                ];
+
+                under18Cards.forEach(card => {
+                    recommend(card.title, card.desc);
+                    cardsContainer.innerHTML += `
         <div class="card" onclick="openTool('${card.tool}')">
           <div class="card-icon">${card.icon}</div>
           <h3>${card.title}</h3>
           <p>${card.desc}</p>
         </div>
       `;
-    });
+                });
 
-  } else {
-    // 👩‍💼 Above 18
-    const fullCards = [
-      { icon: "💌", title: "Letters", desc: "Express heartfelt emotions through writing.", tool: "Letters" },
-      { icon: "🪶", title: "Poems", desc: "Write beautiful verses from your feelings.", tool: "Poems" },
-      { icon: "✨", title: "Stories", desc: "Turn your thoughts into meaningful stories.", tool: "Story" },
-      { icon: "💭", title: "Quotes", desc: "Create inspiring lines and sayings.", tool: "Quotes" },
-      { icon: "📔", title: "Mood Journal", desc: "Reflect on your feelings every day.", tool: "Journal" },
-      { icon: "📝", title: "Notes", desc: "Keep your quick thoughts safe.", tool: "Notes" },
-      { icon: "🌈", title: "Affirmations", desc: "Positive messages for yourself or others.", tool: "Affirmation" },
-      { icon: "🌿", title: "Reflection", desc: "Think and write about your journey.", tool: "Reflection" }
-    ];
+            } else {
+                // 👩‍💼 Above 18
+                const fullCards = [
+                    { icon: "💌", title: "Letters", desc: "Express heartfelt emotions through writing.", tool: "Letters" },
+                    { icon: "🪶", title: "Poems", desc: "Write beautiful verses from your feelings.", tool: "Poems" },
+                    { icon: "✨", title: "Stories", desc: "Turn your thoughts into meaningful stories.", tool: "Story" },
+                    { icon: "💭", title: "Quotes", desc: "Create inspiring lines and sayings.", tool: "Quotes" },
+                    { icon: "📔", title: "Mood Journal", desc: "Reflect on your feelings every day.", tool: "Journal" },
+                    { icon: "📝", title: "Notes", desc: "Keep your quick thoughts safe.", tool: "Notes" },
+                    { icon: "🌈", title: "Affirmations", desc: "Positive messages for yourself or others.", tool: "Affirmation" },
+                    { icon: "🌿", title: "Reflection", desc: "Think and write about your journey.", tool: "Reflection" }
+                ];
 
-    // 📱 Mobile shows all, 💻 Desktop shows limited (e.g. top 4)
-    const visibleCards = isMobile ? fullCards : fullCards.slice(0, 4);
+                // 📱 Mobile shows all, 💻 Desktop shows limited (e.g. top 4)
+                const visibleCards = isMobile ? fullCards : fullCards.slice(0, 4);
 
-    visibleCards.forEach(card => {
-      recommend(card.title, card.desc);
-      cardsContainer.innerHTML += `
+                visibleCards.forEach(card => {
+                    recommend(card.title, card.desc);
+                    cardsContainer.innerHTML += `
         <div class="card" onclick="openTool('${card.tool}')">
           <div class="card-icon">${card.icon}</div>
           <h3>${card.title}</h3>
           <p>${card.desc}</p>
         </div>
       `;
+                });
+            }
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+  const output = document.getElementById("output");
+
+  if (output) {
+    output.addEventListener("input", () => {
+      const toolName = document.getElementById("toolTitle").innerText;
+      const currentText = output.innerText;
+      updateRecentContent(toolName, currentText);
     });
   }
+
+  showRecents();
 });
 
-  </script>
+function updateRecentContent(toolName, newContent) {
+  let recents = JSON.parse(localStorage.getItem("recents")) || [];
+  const index = recents.findIndex(r => r.name === toolName);
+  if (index !== -1) {
+    recents[index].content = newContent;
+    localStorage.setItem("recents", JSON.stringify(recents));
+  }
+}
+
+
+    </script>
 </body>
+
 </html>
