@@ -81,6 +81,7 @@
 
     /* Main area */
     .main{margin-left:230px;flex:1;padding:40px 60px;background:var(--muted);min-height:100vh;}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;} .topbar h1{color:var(--accent);font-size:1.6rem;font-weight:700;}
     .search-bar {
   position: relative;
   margin-bottom: 20px;
@@ -230,104 +231,7 @@
 .copy-btn:hover {
   background: var(--accent-dark);
 }
-    /* Topbar additions (drop into your existing <style>) */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 18px;
-}
 
-.topbar-left h1 {
-  margin: 0;
-  color: var(--accent);
-  font-size:1.6rem;
-}
-
-/* Right side: avatar + name + caret */
-.topbar-right {
-  display: flex;
-  align-items: center;
-  position: relative;
-  gap: 8px;
-}
-
-.avatar-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(0,0,0,0.04);
-  background: transparent;
-  cursor: pointer;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.avatar-btn:focus { outline: 2px solid rgba(123,92,255,0.18); outline-offset: 2px; }
-
-.avatar-img { border-radius: 50%; flex-shrink:0; }
-.avatar-name { display: none; /* hide name on very small screens */ }
-
-@media(min-width:520px) {
-  .avatar-name { display: inline-block; font-size: 0.95rem; color: var(--text); }
-}
-
-/* dropdown menu */
-.dropdown {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  min-width: 170px;
-  background: var(--muted);
-  border-radius: 10px;
-  padding: 6px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  transform-origin: top right;
-  transform: scale(.98);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform .12s ease, opacity .12s ease;
-  border: 1px solid rgba(0,0,0,0.04);
-  z-index: 60;
-}
-
-.dropdown[aria-hidden="false"] {
-  transform: scale(1);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.dropdown-item {
-  display: block;
-  width: 100%;
-  text-align: left;
-  padding: 8px 10px;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: var(--text);
-  font-weight: 600;
-}
-
-.dropdown-item:hover, .dropdown-item:focus {
-  background: rgba(123,92,255,0.08);
-  outline: none;
-}
-
-.dropdown-divider {
-  height: 1px;
-  margin: 6px 0;
-  background: rgba(0,0,0,0.04);
-  border-radius: 1px;
-}
-
-.danger {
-  color: #b91c1c; /* red-ish logout */
-}
     @media(max-width:768px){
       .sidebar{display:none;}
       .main{margin:0;padding:30px;}
@@ -381,30 +285,7 @@
   <!-- Main -->
   <main class="main">
    <!-- Topbar with avatar + dropdown -->
-<div class="topbar">
-  <div class="topbar-left">
-    <h1 id="welcomeText">Welcome!</h1>
-  </div>
-
-  <div class="topbar-right">
-    <button id="profileBtn" class="avatar-btn" aria-haspopup="true" aria-expanded="false" title="Open profile menu">
-      <!-- simple inline SVG avatar (replace with <img src="..."> if you have one) -->
-      <svg class="avatar-img" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
-        <circle cx="16" cy="12" r="7" fill="var(--accent)"></circle>
-        <path d="M4 28c0-6.6 5.4-12 12-12s12 5.4 12 12" fill="rgba(0,0,0,0.06)"></path>
-      </svg>
-      <span class="avatar-name">Mohith</span>
-      <svg class="caret" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 10l5 5 5-5z" fill="currentColor"/></svg>
-    </button>
-
-    <div id="profileMenu" class="dropdown" role="menu" aria-hidden="true">
-      <button class="dropdown-item" role="menuitem" id="menuProfile">Profile</button>
-      <button class="dropdown-item" role="menuitem" id="menuSettings">Settings</button>
-      <div class="dropdown-divider"></div>
-      <button class="dropdown-item danger" role="menuitem" id="menuLogout">Logout</button>
-    </div>
-  </div>
-</div>
+<div class="topbar"> <h1 id="welcomeText">Welcome!</h1> </div>
 
 
     <div class="search-bar">
@@ -962,67 +843,6 @@ function suggestFeeling() {
       `;
     });
   }
-});
-// Profile dropdown toggle
-const profileBtn = document.getElementById("profileBtn");
-const profileMenu = document.getElementById("profileMenu");
-
-profileBtn.addEventListener("click", () => {
-  const isOpen = profileMenu.getAttribute("aria-hidden") === "false";
-  profileMenu.setAttribute("aria-hidden", isOpen ? "true" : "false");
-});
-
-// Hide dropdown when clicking outside
-document.addEventListener("click", (e) => {
-  if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
-    profileMenu.setAttribute("aria-hidden", "true");
-  }
-});
-
-// Show Profile / Settings dynamically as dashboard cards
-const libraryView = document.getElementById("libraryView");
-const workspaceView = document.getElementById("workspaceView");
-const cardsContainer = libraryView.querySelector(".cards");
-
-// Utility to show dynamic dashboard cards
-function showDashboardCards(cardsHTML) {
-  workspaceView.classList.remove("active");
-  libraryView.style.display = "block";
-  cardsContainer.innerHTML = cardsHTML;
-}
-
-// PROFILE card
-document.getElementById("menuProfile").addEventListener("click", () => {
-  profileMenu.setAttribute("aria-hidden", "true");
-  showDashboardCards(`
-    <div class="card">
-      <div class="card-icon">👤</div>
-      <h3>Your Profile</h3>
-      <p>Name: Mohith</p>
-      <p>Role: Creator of HeartNote AI</p>
-      <button class="upgrade-btn" onclick="alert('Edit feature coming soon 💗')">Edit Profile</button>
-    </div>
-  `);
-});
-
-// SETTINGS card
-document.getElementById("menuSettings").addEventListener("click", () => {
-  profileMenu.setAttribute("aria-hidden", "true");
-  showDashboardCards(`
-    <div class="card">
-      <div class="card-icon">⚙️</div>
-      <h3>Settings</h3>
-      <p>Customize your HeartNote AI experience.</p>
-      <button class="upgrade-btn" onclick="alert('Theme customization coming soon 💫')">Change Theme</button>
-    </div>
-  `);
-});
-
-// LOGOUT handler
-document.getElementById("menuLogout").addEventListener("click", () => {
-  localStorage.removeItem("heartnote_username");
-  alert("Logged out successfully 💗");
-  window.location.reload();
 });
 
   </script>
