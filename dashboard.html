@@ -232,6 +232,109 @@
 .copy-btn:hover {
   background: var(--accent-dark);
 }
+    /* Topbar additions (drop into your existing <style>) */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 18px;
+  background: var(--bg);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.topbar-left h1 {
+  margin: 0;
+  color: var(--accent);
+  font-size: 1.05rem;
+}
+
+/* Right side: avatar + name + caret */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 8px;
+}
+
+.avatar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.04);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.avatar-btn:focus { outline: 2px solid rgba(123,92,255,0.18); outline-offset: 2px; }
+
+.avatar-img { border-radius: 50%; flex-shrink:0; }
+.avatar-name { display: none; /* hide name on very small screens */ }
+
+@media(min-width:520px) {
+  .avatar-name { display: inline-block; font-size: 0.95rem; color: var(--text); }
+}
+
+/* dropdown menu */
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 170px;
+  background: var(--muted);
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transform-origin: top right;
+  transform: scale(.98);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .12s ease, opacity .12s ease;
+  border: 1px solid rgba(0,0,0,0.04);
+  z-index: 60;
+}
+
+.dropdown[aria-hidden="false"] {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background: rgba(123,92,255,0.08);
+  outline: none;
+}
+
+.dropdown-divider {
+  height: 1px;
+  margin: 6px 0;
+  background: rgba(0,0,0,0.04);
+  border-radius: 1px;
+}
+
+.danger {
+  color: #b91c1c; /* red-ish logout */
+}
     @media(max-width:768px){
       .sidebar{display:none;}
       .main{margin:0;padding:30px;}
@@ -284,9 +387,28 @@
 
   <!-- Main -->
   <main class="main">
-    <div class="topbar">
-      <h1 id="welcomeText">Welcome!</h1>
+    <div class="topbar-left">
+    <h1 id="welcomeText">Welcome!</h1>
+  </div>
+
+  <div class="topbar-right">
+    <button id="profileBtn" class="avatar-btn" aria-haspopup="true" aria-expanded="false" title="Open profile menu">
+      <!-- simple inline SVG avatar (replace with <img src="..."> if you have one) -->
+      <svg class="avatar-img" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
+        <circle cx="16" cy="12" r="7" fill="var(--accent)"></circle>
+        <path d="M4 28c0-6.6 5.4-12 12-12s12 5.4 12 12" fill="rgba(0,0,0,0.06)"></path>
+      </svg>
+      <span class="avatar-name">Mohith</span>
+      <svg class="caret" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 10l5 5 5-5z" fill="currentColor"/></svg>
+    </button>
+
+    <div id="profileMenu" class="dropdown" role="menu" aria-hidden="true">
+      <button class="dropdown-item" role="menuitem" id="menuProfile">Profile</button>
+      <button class="dropdown-item" role="menuitem" id="menuSettings">Settings</button>
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item danger" role="menuitem" id="menuLogout">Logout</button>
     </div>
+  </div>
 
     <div class="search-bar">
   <span class="search-icon">🔍</span>
@@ -844,6 +966,85 @@ function suggestFeeling() {
     });
   }
 });
+    (function(){
+  const profileBtn = document.getElementById('profileBtn');
+  const profileMenu = document.getElementById('profileMenu');
+
+  function openMenu() {
+    profileMenu.setAttribute('aria-hidden', 'false');
+    profileBtn.setAttribute('aria-expanded', 'true');
+    document.addEventListener('click', outsideClick);
+    document.addEventListener('keydown', onKeydown);
+  }
+
+  function closeMenu() {
+    profileMenu.setAttribute('aria-hidden', 'true');
+    profileBtn.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('click', outsideClick);
+    document.removeEventListener('keydown', onKeydown);
+  }
+
+  function outsideClick(e) {
+    if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+      closeMenu();
+    }
+  }
+
+  function onKeydown(e) {
+    if (e.key === 'Escape') closeMenu();
+    if (e.key === 'Tab') {
+      // close when tabbing away from menu
+      setTimeout(() => {
+        if (!profileMenu.contains(document.activeElement)) closeMenu();
+      }, 10);
+    }
+  }
+
+  profileBtn.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    const opened = profileMenu.getAttribute('aria-hidden') === 'false';
+    if (opened) closeMenu(); else openMenu();
+  });
+
+  // keyboard support (Enter / Space)
+  profileBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      profileBtn.click();
+    }
+  });
+
+  // Wire menu actions
+  document.getElementById('menuProfile').addEventListener('click', () => {
+    closeMenu();
+    openProfile();
+  });
+  document.getElementById('menuSettings').addEventListener('click', () => {
+    closeMenu();
+    openSettings();
+  });
+  document.getElementById('menuLogout').addEventListener('click', () => {
+    closeMenu();
+    logout();
+  });
+
+  // stub functions — replace with your logic
+  function openProfile() {
+    // e.g., open a modal or navigate to profile page
+    alert('Open Profile (replace with real action)');
+  }
+  function openSettings() {
+    alert('Open Settings (replace with real action)');
+  }
+  function logout() {
+    // soft logout: clear session localStorage keys / redirect
+    if (confirm('Logout?')) {
+      // example: localStorage.clear();
+      alert('Logged out (replace with redirect or real logout)');
+    }
+  }
+
+})();
 
   </script>
 </body>
