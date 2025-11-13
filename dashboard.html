@@ -597,6 +597,7 @@
 
         <!-- Dashboard Cards -->
         <div id="libraryView">
+            <h3>✨ Recommandation</h3>
             <div class="cards">
                 <div class="card" onclick="openTool('Letters')">
                     <div class="card-icon">💌</div>
@@ -615,7 +616,7 @@
                 </div>
             </div>
               <div id="recentSection" class="recent-section">
-    <h3>🕒 Recently Used</h3>
+    <h3>🕒 Your Recent Activity</h3>
     <div id="recentCards" class="recent-cards"></div>
   </div>
         </div>
@@ -679,22 +680,23 @@ function openTool(name) {
     return;
   }
 
-  // Hide dashboard & show workspace
+  // Hide dashboard, show workspace
   document.getElementById('libraryView').style.display = 'none';
   document.getElementById('workspaceView').classList.add('active');
   document.getElementById('toolTitle').innerText = name;
 
-  // 🧠 Load saved data for this tool
+  // Load recent data ONLY if opened from recents
   const recents = JSON.parse(localStorage.getItem("recents")) || [];
-  const found = recents.find(r => r.name === name);
+  const found = recents.find(r => r.name === name && r.output); // must have output
 
-  if (found) {
+  if (found && event.target.closest('.recent-card')) {
+    // Load user's saved recent data
     document.getElementById("nameInput").value = found.nameInput || "";
     document.getElementById("descInput").value = found.descInput || "";
     document.getElementById("depthInput").value = found.depthInput || "light";
     document.getElementById("output").innerText = found.output || "Your writing will appear here...";
   } else {
-    // Default empty
+    // New, clean page for dashboard card
     document.getElementById("nameInput").value = "";
     document.getElementById("descInput").value = "";
     document.getElementById("depthInput").value = "light";
