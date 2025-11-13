@@ -711,25 +711,27 @@ function openTool(name) {
 function saveRecent(toolName) {
   let recents = JSON.parse(localStorage.getItem("recents")) || [];
 
-  // Get current form data
-  const data = {
-    name: toolName,
-    icon: getToolIcon(toolName),
-    time: new Date().toLocaleString(),
-    nameInput: document.getElementById("nameInput").value,
-    descInput: document.getElementById("descInput").value,
-    depthInput: document.getElementById("depthInput").value,
-    output: document.getElementById("output").innerText
-  };
+const data = {
+  id: Date.now(), // unique timestamp
+  name: toolName,
+  icon: getToolIcon(toolName),
+  time: new Date().toLocaleString(),
+  nameInput: document.getElementById("nameInput").value,
+  descInput: document.getElementById("descInput").value,
+  depthInput: document.getElementById("depthInput").value,
+  output: document.getElementById("output").innerText
+};
 
-  // Add to top
+
+  // ✅ Instead of removing duplicates, just push new entry
   recents.unshift(data);
 
-  // Limit to 5 items
+  // ✅ Optional: If you want to limit to 5 total
   recents = recents.slice(0, 5);
 
   localStorage.setItem("recents", JSON.stringify(recents));
 }
+
 
 function getToolIcon(name) {
   const icons = {
@@ -748,12 +750,13 @@ function getToolIcon(name) {
 
 
 // 🧹 Delete individual recent
-function deleteRecent(toolName) {
+function deleteRecent(id) {
   let recents = JSON.parse(localStorage.getItem("recents")) || [];
-  recents = recents.filter(r => r.name !== toolName);
+  recents = recents.filter(r => r.id !== id);
   localStorage.setItem("recents", JSON.stringify(recents));
   showRecents();
 }
+
 
 // 🕒 Show recents on dashboard
 function showRecents() {
@@ -776,7 +779,7 @@ function showRecents() {
             <small>${r.time}</small>
           </div>
         </div>
-        <button class="delete-btn" onclick="deleteRecent('${r.name}')">❌</button>
+       <button class="delete-btn" onclick="deleteRecent(${r.id})">❌</button>
       </div>
     `;
   });
