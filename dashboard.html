@@ -168,6 +168,50 @@
             font-size: 1.6rem;
             font-weight: 700;
         }
+        .avatar-container {
+    position: relative;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ddd;
+}
+
+.dropdown {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: var(--bg);
+    width: 150px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease;
+    z-index: 10;
+}
+
+.dropdown p {
+    margin: 0;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.dropdown p:hover {
+    background:var(--muted);
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
         .search-bar {
             position: relative;
@@ -579,10 +623,32 @@
 
     <!-- Main -->
     <main class="main">
-        <!-- Topbar with avatar + dropdown -->
-        <div class="topbar">
-            <h1 id="welcomeText">Welcome!</h1>
+    <!-- Topbar with avatar + dropdown -->
+<div class="topbar">
+    <h1 id="welcomeText">Welcome!</h1>
+
+    <div class="avatar-container">
+       <img 
+    class="avatar"
+    onclick="toggleDropdown()"
+    src="data:image/svg+xml;utf8,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+  <circle cx='32' cy='32' r='30' fill='%23ffe4e6'/>
+  <path d='M32 22c3-6 12-6 15 0 3 6-1 14-15 22-14-8-18-16-15-22 3-6 12-6 15 0z'
+        fill='%23e11d48'/>
+</svg>"
+/>
+
+
+
+        <div id="avatarDropdown" class="dropdown hidden">
+            <p onclick="openProfile()">👤 Profile</p>
+            <p onclick="openSettings()">⚙️ Settings</p>
+            <p onclick="openAbout()">ℹ️ About</p>
         </div>
+    </div>
+</div>
+
 
 
         <div class="search-bar">
@@ -1296,6 +1362,32 @@ function updateRecentContent(toolName, newContent) {
     localStorage.setItem("recents", JSON.stringify(recents));
   }
 }
+        function toggleDropdown() {
+    document.getElementById("avatarDropdown").classList.toggle("hidden");
+}
+
+function openProfile() {
+    alert("Open Profile Page");
+}
+
+function openSettings() {
+    alert("Open Settings Page");
+}
+
+function openAbout() {
+    alert("Solulure Labs - About Section");
+}
+
+// Auto-close dropdown when clicking outside
+document.addEventListener("click", function(e) {
+    const dropdown = document.getElementById("avatarDropdown");
+    const avatar = document.querySelector(".avatar");
+
+    if (!avatar.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.add("hidden");
+    }
+});
+
 
 
     </script>
