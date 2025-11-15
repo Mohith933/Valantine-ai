@@ -1282,7 +1282,8 @@ function goBack() {
     const tool = document.getElementById("toolTitle").innerText;
     const text = document.getElementById("output").innerText;
 
-    const sensitiveTools = ["Love Letter Maker", "Letters", "Poems", "Story", "Quotes"];
+    // Your 4 emotional tools only
+    const sensitiveTools = ["Letters", "Poems", "Story", "Quotes"];
 
     // If sensitive tool → show warning popup first
     if (sensitiveTools.includes(tool)) {
