@@ -814,24 +814,31 @@
             <div class="tool-item" onclick="openTool('Quotes')">Quote Maker</div>
         </div>
       
-      <!-- Profile View -->
+      <<!-- Profile View -->
 <div id="profileView" class="hidden pageView">
     <button class="back-btn" onclick="goDashboard()">← Back</button>
 
     <h2>👤 Your Profile</h2>
+
     <div class="profile-box">
-        <img class="profile-avatar" src="data:image/svg+xml;utf8,
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
-  <circle cx='32' cy='32' r='30' fill='%23ffe4e6'/>
-  <path d='M32 22c3-6 12-6 15 0 3 6-1 14-15 22-14-8-18-16-15-22 3-6 12-6 15 0z'
-        fill='%23e11d48'/>
-</svg>">
-        <input type="text" id="profileName" placeholder="Your Name">
-        <input type="text" id="profileBio" placeholder="Short Bio">
-        <button onclick="saveProfile()">Save</button>
+        <!-- Avatar -->
+        <img class="profile-avatar" src="default-avatar.svg" id="profileAvatar">
+        
+        <!-- Username -->
+        <input type="text" id="profileUsername" placeholder="Username">
+
+        <!-- Email -->
+        <input type="email" id="profileEmail" placeholder="Email">
+
+        <!-- Date of Birth -->
+        <input type="date" id="profileDOB">
+
+        <!-- Short Bio -->
+        <textarea id="profileBio" placeholder="Write a short bio..."></textarea>
+
+        <button onclick="saveProfile()">Save Profile</button>
     </div>
 </div>
-
 <!-- Settings View -->
 <div id="settingsView" class="hidden pageView">
     <button class="back-btn" onclick="goDashboard()">← Back</button>
@@ -839,9 +846,23 @@
     <h2>⚙️ Settings</h2>
 
     <div class="settings-box">
+
+        <!-- General Section -->
+        <h3>General</h3>
         <label><input type="checkbox" id="darkModeToggle"> Dark Mode</label>
-        <label><input type="checkbox" id="autoSaveToggle"> Auto Save Writing</label>
         <label><input type="checkbox" id="notifToggle"> Notifications</label>
+
+        <!-- Writing Preferences -->
+        <h3>Writing Preferences</h3>
+        <label><input type="checkbox" id="emotionHintsToggle"> Show Emotion Suggestions</label>
+        <label><input type="checkbox" id="autoFeelingToggle"> Auto Detect Feelings (AI)</label>
+        <label><input type="checkbox" id="handwritingToggle"> Handwriting Style Output</label>
+
+        <!-- Account & Data -->
+        <h3>Account & Data</h3>
+        <label><input type="checkbox" id="autoSaveToggle"> Auto Save Writing</label>
+        <label><input type="checkbox" id="backupToggle"> Cloud Backup</label>
+        <button onclick="logoutUser()">Logout</button>
     </div>
 </div>
 
@@ -1612,7 +1633,120 @@ function openAbout() {
     document.getElementById("libraryView").style.display = "block";  // Show main screen
 }
 
+/* ==========================================================
+   🔹 1. LOAD PROFILE & SETTINGS ON STARTUP
+   ========================================================== */
 
+window.onload = () => {
+    loadProfile();
+    loadSettings();
+};
+
+
+
+/* ==========================================================
+   🔹 2. PROFILE FUNCTIONS
+   ========================================================== */
+
+function saveProfile() {
+    const profile = {
+        username: document.getElementById("profileUsername").value,
+        email: document.getElementById("profileEmail").value,
+        dob: document.getElementById("profileDOB").value,
+        bio: document.getElementById("profileBio").value
+    };
+
+    localStorage.setItem("userProfile", JSON.stringify(profile));
+
+    alert("Profile saved successfully! 💗");
+}
+
+function loadProfile() {
+    const data = localStorage.getItem("userProfile");
+    if (!data) return;
+
+    const profile = JSON.parse(data);
+
+    document.getElementById("profileUsername").value = profile.username || "";
+    document.getElementById("profileEmail").value = profile.email || "";
+    document.getElementById("profileDOB").value = profile.dob || "";
+    document.getElementById("profileBio").value = profile.bio || "";
+}
+
+
+
+/* ==========================================================
+   🔹 3. SETTINGS FUNCTIONS
+   ========================================================== */
+
+function saveSettings() {
+    const settings = {
+        darkMode: document.getElementById("darkModeToggle").checked,
+        notifications: document.getElementById("notifToggle").checked,
+        autoSave: document.getElementById("autoSaveToggle").checked,
+        emotionHints: document.getElementById("emotionHintsToggle").checked,
+        autoFeeling: document.getElementById("autoFeelingToggle").checked,
+        handwriting: document.getElementById("handwritingToggle").checked,
+        backup: document.getElementById("backupToggle").checked
+    };
+
+    localStorage.setItem("userSettings", JSON.stringify(settings));
+
+    applySettings(settings);
+}
+
+function loadSettings() {
+    const data = localStorage.getItem("userSettings");
+    if (!data) return;
+
+    const settings = JSON.parse(data);
+
+    // Set UI toggles
+    document.getElementById("darkModeToggle").checked = settings.darkMode || false;
+    document.getElementById("notifToggle").checked = settings.notifications || false;
+    document.getElementById("autoSaveToggle").checked = settings.autoSave || false;
+    document.getElementById("emotionHintsToggle").checked = settings.emotionHints || false;
+    document.getElementById("autoFeelingToggle").checked = settings.autoFeeling || false;
+    document.getElementById("handwritingToggle").checked = settings.handwriting || false;
+    document.getElementById("backupToggle").checked = settings.backup || false;
+
+    applySettings(settings);
+}
+
+function applySettings(settings) {
+    // Dark mode handler
+    if (settings.darkMode) {
+        document.body.classList.add("dark");
+    } else {
+        document.body.classList.remove("dark");
+    }
+}
+
+
+
+/* ==========================================================
+   🔹 4. AUTO-SAVE TOGGLE EVENT LISTENERS
+   ========================================================== */
+
+document.querySelectorAll("#settingsView input[type='checkbox']")
+    .forEach(toggle => {
+        toggle.addEventListener("change", saveSettings);
+    });
+
+
+
+/* ==========================================================
+   🔹 5. LOGOUT FUNCTION
+   ========================================================== */
+
+function logoutUser() {
+    if (confirm("Are you sure you want to logout?")) {
+        // You can clear only login but keep profile OR clear everything
+        // Here we only simulate logout
+        alert("Logged out!");
+        // redirect or show login page if needed
+    }
+}
 
 // Auto-close dropdown when clicking outside
 document.addEventListener("click", function(e) {
