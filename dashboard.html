@@ -1028,24 +1028,6 @@ function getToolIcon(name) {
   };
   return icons[name] || "🪶";
 }
-function saveBlockedRecent() {
-  let recents = JSON.parse(localStorage.getItem("recents")) || [];
-
-  const data = {
-    id: Date.now(),
-    name: "Blocked",
-    icon: "🚫",
-    time: new Date().toLocaleString(),
-    nameInput: document.getElementById("nameInput").value,
-    descInput: document.getElementById("descInput").value,
-    depthInput: document.getElementById("depthInput").value,
-    output: "⚠️ Blocked content (restricted words detected)"
-  };
-
-  recents.unshift(data);
-  recents = recents.slice(0, 5);
-  localStorage.setItem("recents", JSON.stringify(recents));
-}
 
 function showRecents() {
   const recents = JSON.parse(localStorage.getItem("recents")) || [];
@@ -1109,15 +1091,18 @@ function goBack() {
   const descInput = document.getElementById("descInput").value.trim();
   const output = document.getElementById("output").innerText.trim();
 
-  // ✅ Only save if it’s a new creation
-  if (
-    !isViewingRecent &&
-    (nameInput || descInput || (output && output !== "Your writing will appear here..."))
+  // 🚫 skip saving to recents entirely if blocked
+  if (isBlocked) {
+    isBlocked = false;
+  } 
+  else if (
+      !isViewingRecent &&
+      (nameInput || descInput || (output && output !== "Your writing will appear here..."))
   ) {
-    saveRecent(currentTool);
+      saveRecent(currentTool);  // Only for normal output
   }
 
-  // Reset flag when going back
+  // reset flag
   isViewingRecent = false;
 
   document.getElementById("workspaceView").classList.remove("active");
@@ -1139,9 +1124,6 @@ function typeWrite(text, elementId, speed = 30) {
     }
     type();
 }
-
-
-
 
 
         function generateContent() {
@@ -1172,8 +1154,8 @@ function containsBannedWords(text) {
 
 if (containsBannedWords(name) || containsBannedWords(desc)) {
     output.innerText = "⚠️ Safety Alert: Your input contains restricted words.";
-    saveBlockedRecent(); // ⭐ FIXED
-    return;
+    isBlocked = true;   // mark as blocked
+    return;             // DO NOT save anything to recents
 }
             // Utility to select a random element from an array (Crucial for variability)
             const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
