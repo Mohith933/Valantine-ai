@@ -1098,14 +1098,14 @@ function goBack() {
   const descInput = document.getElementById("descInput").value.trim();
   const output = document.getElementById("output").innerText.trim();
 
+  const hasGeneratedContent = output && output !== "Your writing will appear here...";
+
   // 🚫 Do not save if blocked
   if (isBlocked) {
-    state.dataset.blocked = "false"; // reset flag
+    state.dataset.blocked = "false"; 
   }
-  else if (
-    !isViewingRecent &&
-    (nameInput || descInput || (output && output !== "Your writing will appear here..."))
-  ) {
+  else if (!isViewingRecent && hasGeneratedContent) {
+    // ✅ ONLY save when real content is generated
     saveRecent(currentTool);
   }
 
