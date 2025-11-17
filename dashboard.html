@@ -1135,20 +1135,27 @@ function typeWrite(text, elementId, speed = 30) {
             // Store the title once
             const title = document.getElementById('toolTitle').innerText.toLowerCase();
             const output = document.getElementById('output');
-const BANNED_WORDS = [
-    "sex", "porn", "nude", "kill", "murder", "suicide", 
-    "abuse", "hate", "violence", "threat"
+const BANNED_PATTERNS = [
+    /sex/i,
+    /porn/i,
+    /nude/i,
+    /kill/i,        // kills, killing, killed
+    /murder/i,      // murdered, murdering
+    /suicid/i,      // suicide, suicidal
+    /abus/i,        // abuse, abused, abusing
+    /hat/i,         // hate, hated, hating
+    /violen/i,      // violence, violent
+    /threat/i       // threaten, threatening
 ];
 
 function containsBannedWords(text) {
-    const lower = text.toLowerCase();
-    return BANNED_WORDS.some(bw => lower.includes(bw));
+    return BANNED_PATTERNS.some(pattern => pattern.test(text));
 }
 if (containsBannedWords(message)) {
     output.innerText = "⚠️ Safety Alert: Generated content blocked for security reasons.";
 
     // ⭐ Save safe placeholder to recents so UI works properly
-    saveToRecents("⚠️ Blocked content (restricted words detected)");
+    saveRecents("⚠️ Blocked content (restricted words detected)");
 
     return;
 }
