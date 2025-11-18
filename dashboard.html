@@ -240,123 +240,175 @@
 }
 
 
-/* ------------------------------
-   ACCOUNT PAGE – CLEAN PREMIUM UI
------------------------------- */
-
+/* Main Account Page */
 #accountView {
     padding: 20px;
+    max-width: 650px;
+    margin: 0 auto;
     animation: fadeIn 0.3s ease;
 }
 
 #accountView h2 {
     font-size: 26px;
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 20px;
 }
 
 /* Section Boxes */
 .section-box {
     background: var(--card);
-    padding: 18px;
-    margin-top: 18px;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     transition: 0.2s ease;
 }
+      
+      .section-box label{
+        color:var(--text);
+      }
 
 .section-box:hover {
-    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
+      /* Row Layout */
+.toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Switch Style */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Slider Background */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+    background-color: #ccc;
+    border-radius: 24px;
+    transition: 0.3s;
+}
+
+/* Slider Circle */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+/* ON State */
+.switch input:checked + .slider {
+    background-color: #ff4f7b;
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
 
 .section-box h3 {
-    font-size: 18px;
     margin-bottom: 12px;
-    opacity: 0.8;
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--text);
 }
+      
+      .section-box p{
+        color:var(--text);
+      }
 
-/* Profile Avatar */
+/* Avatar */
 .profile-avatar {
-    width: 88px;
-    height: 88px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    margin-bottom: 12px;
-    border: 2px solid #e5e5e5;
+    margin: 10px 0;
+    display: block;
 }
 
 /* Inputs */
 #accountView input,
 #accountView textarea {
     width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 12px;
-    border-radius: 12px;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 10px;
     border: 1px solid #ddd;
-    font-size: 14px;
-    outline: none;
-    transition: 0.2s;
-    background: var(--bg);
-}
-
-#accountView textarea {
-    resize: vertical;
-    min-height: 70px;
+    font-size: 15px;
+    transition: 0.2s ease;
 }
 
 #accountView input:focus,
 #accountView textarea:focus {
-    border-color: #8a5cff;
-    box-shadow: 0 0 0 3px rgba(138,92,255,0.15);
+    border-color: var(--muted);
+    box-shadow: 0 0 6px rgba(255, 79, 123, 0.3);
 }
 
-/* Buttons */
+/* Save and Logout Buttons */
 #accountView button {
-    width: 100%;
-    padding: 10px 14px;
-    background: #8a5cff;
-    border: none;
+    padding: 12px 16px;
+    background: #ff4f7b;
     color: white;
-    border-radius: 12px;
+    border: none;
+    border-radius: 10px;
     font-size: 15px;
     cursor: pointer;
-    transition: 0.2s;
+    margin-top: 10px;
+    width: 100%;
+    transition: 0.2s ease;
 }
 
 #accountView button:hover {
-    background: #7647ff;
+    background: #ff355f;
 }
 
-/* Labels (checkbox) */
-#accountView label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
+/* Small About Text */
+.about-small {
     font-size: 14px;
-    cursor: pointer;
+    color: #666;
 }
 
 /* Back Button */
-.back-btn {
+.back {
     background: transparent;
     border: none;
-    font-size: 18px;
-    margin-bottom: 12px;
+    font-size: 16px;
+    margin-bottom: 15px;
     cursor: pointer;
-    color: var(--text);
+    color: var(--accent);
 }
 
-/* About Text */
-.about-small {
-    margin-top: 8px;
-    font-size: 13px;
-    opacity: 0.6;
-}
 
-/* Fade Animation */
+
+/* Smooth Fade Animation */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 
@@ -810,7 +862,7 @@
       
    <!-- Account View -->
 <div id="accountView" class="hidden pageView">
-    <button class="back-btn" onclick="goDashboard()">← Back</button>
+    <button class="back" onclick="goDashboard()">← Back</button>
 
     <h2>👤 Account</h2>
 
@@ -818,7 +870,12 @@
     <div class="section-box">
         <h3>Profile</h3>
 
-        <img class="profile-avatar" src="default-avatar.svg" id="profileAvatar">
+        <img class="profile-avatar" src="data:image/svg+xml;utf8,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+  <circle cx='32' cy='32' r='30' fill='%23ffe4e6'/>
+  <path d='M32 22c3-6 12-6 15 0 3 6-1 14-15 22-14-8-18-16-15-22 3-6 12-6 15 0z'
+        fill='%23e11d48'/>
+</svg>" id="profileAvatar">
 
         <input type="text" id="profileUsername" placeholder="Username">
         <input type="email" id="profileEmail" placeholder="Email">
@@ -832,15 +889,62 @@
     <div class="section-box">
         <h3>Settings</h3>
 
-        <label><input type="checkbox" id="darkModeToggle"> Dark Mode</label>
-        <label><input type="checkbox" id="notifToggle"> Notifications</label>
+       <label class="toggle-row">
+    <span>Dark Mode</span>
+    <label class="switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider"></span>
+    </label>
+</label>
 
-        <label><input type="checkbox" id="emotionHintsToggle"> Emotion Suggestions</label>
-        <label><input type="checkbox" id="autoFeelingToggle"> Auto Feeling Detect</label>
-        <label><input type="checkbox" id="handwritingToggle"> Handwriting Style</label>
+<label class="toggle-row">
+    <span>Notifications</span>
+    <label class="switch">
+        <input type="checkbox" id="notifToggle">
+        <span class="slider"></span>
+    </label>
+</label>
 
-        <label><input type="checkbox" id="autoSaveToggle"> Auto Save</label>
-        <label><input type="checkbox" id="backupToggle"> Cloud Backup</label>
+<label class="toggle-row">
+    <span>Emotion Suggestions</span>
+    <label class="switch">
+        <input type="checkbox" id="emotionHintsToggle">
+        <span class="slider"></span>
+    </label>
+</label>
+
+<label class="toggle-row">
+    <span>Auto Feeling Detect</span>
+    <label class="switch">
+        <input type="checkbox" id="autoFeelingToggle">
+        <span class="slider"></span>
+    </label>
+</label>
+
+<label class="toggle-row">
+    <span>Handwriting Style</span>
+    <label class="switch">
+        <input type="checkbox" id="handwritingToggle">
+        <span class="slider"></span>
+    </label>
+</label>
+
+<label class="toggle-row">
+    <span>Auto Save</span>
+    <label class="switch">
+        <input type="checkbox" id="autoSaveToggle">
+        <span class="slider"></span>
+    </label>
+</label>
+
+<label class="toggle-row">
+    <span>Cloud Backup</span>
+    <label class="switch">
+        <input type="checkbox" id="backupToggle">
+        <span class="slider"></span>
+    </label>
+</label>
+
 
         <button onclick="logoutUser()">Logout</button>
     </div>
