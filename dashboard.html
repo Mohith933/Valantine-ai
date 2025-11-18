@@ -1143,16 +1143,36 @@ function typeWrite(text, elementId, speed = 30) {
             const title = document.getElementById('toolTitle').innerText.toLowerCase();
             const output = document.getElementById('output');
 const BANNED_PATTERNS = [
+    // Sexual explicit words
     /\bsex\b/i,
-    /\bporn/i,
-    /\bnude/i,
-    /\bkill/i,        
-    /\bmurder/i,      
-    /\bsuicid/i,      
-    /\babus/i,        
-    /\bhat(e|ing|ed)?\b/i, 
-    /\bviolen/i,      
-    /\bthreat/i       
+    /\bporn\b/i,
+    /\bnude\b/i,
+    /\bfuck(ing|ed)?\b/i,
+    /\basshole\b/i,
+    /\bslut\b/i,
+    /\bdick\b/i,
+    /\bboobs?\b/i,
+    
+    // Insults
+    /\bfuck you\b/i,
+    /\bbitch(es)?\b/i,
+    /\bbastard\b/i,
+    /\bidiot\b/i,
+    /\bstupid\b/i,
+    /\bretard(ed)?\b/i,
+    /\bmotherfucker\b/i,
+
+    // Violence & harm
+    /\bkill\b/i,
+    /\bmurder\b/i,
+    /\bsuicid(e|al)?/i,
+    /\bviolence?\b/i,
+    /\bthreat(s)?\b/i,
+    /\bmassacre\b/i,
+
+    // Abuse
+    /\babus(e|ing|ed)?\b/i,
+    /\bhate(s|ful)?\b/i
 ];
 
 function containsBannedWords(text) {
