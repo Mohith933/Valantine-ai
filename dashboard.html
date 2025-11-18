@@ -1856,15 +1856,6 @@ function logoutUser() {
     }
 }
 
-// Auto-close dropdown when clicking outside
-document.addEventListener("click", function(e) {
-    const dropdown = document.getElementById("avatarDropdown");
-    const avatar = document.querySelector(".avatar");
-
-    if (!avatar.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.add("hidden");
-    }
-});
 
 
 
