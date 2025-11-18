@@ -791,9 +791,9 @@
 
 
         <div id="avatarDropdown" class="dropdown hidden">
-            <p onclick="openProfile()">👤 Profile</p>
-            <p onclick="openSettings()">⚙️ Settings</p>
-            <p onclick="openAbout()">ℹ️ About</p>
+            <p onclick="openTool('Profile')">👤 Profile</p>
+<p onclick="openTool('Settings')">⚙️ Settings</p>
+<p onclick="openTool('About')">ℹ️ About</p>
         </div>
     </div>
 </div>
@@ -963,30 +963,51 @@
 
 
 function openTool(name) {
-  if (name === 'Dashboard') {
-    document.getElementById('workspaceView').classList.remove('active');
-    document.getElementById('libraryView').style.display = 'block';
+  // Hide everything first
+  document.getElementById("libraryView").style.display = "none";
+  document.getElementById("workspaceView").classList.remove("active");
+  document.getElementById("profileView").classList.add("hidden");
+  document.getElementById("settingsView").classList.add("hidden");
+  document.getElementById("aboutView").classList.add("hidden");
+
+  // --- 1️⃣ Dashboard ---
+  if (name === "Dashboard") {
+    document.getElementById("libraryView").style.display = "block";
     showRecents();
     return;
   }
 
-  // Hide dashboard, show workspace
-  document.getElementById('libraryView').style.display = 'none';
+  // --- 2️⃣ Profile Page ---
+  if (name === "Profile") {
+    document.getElementById("profileView").classList.remove("hidden");
+    return;
+  }
+
+  // --- 3️⃣ Settings Page ---
+  if (name === "Settings") {
+    document.getElementById("settingsView").classList.remove("hidden");
+    return;
+  }
+
+  // --- 4️⃣ About Page ---
+  if (name === "About") {
+    document.getElementById("aboutView").classList.remove("hidden");
+    return;
+  }
+
+  // --- 5️⃣ Writing Tools (Letters, Poems, Notes...) ---
   document.getElementById('workspaceView').classList.add('active');
   document.getElementById('toolTitle').innerText = name;
 
-  // Load recent data ONLY if opened from recents
   const recents = JSON.parse(localStorage.getItem("recents")) || [];
-  const found = recents.find(r => r.name === name && r.output); // must have output
+  const found = recents.find(r => r.name === name && r.output);
 
   if (found && event.target.closest('.recent-card')) {
-    // Load user's saved recent data
     document.getElementById("nameInput").value = found.nameInput || "";
     document.getElementById("descInput").value = found.descInput || "";
     document.getElementById("depthInput").value = found.depthInput || "light";
     document.getElementById("output").innerText = found.output || "Your writing will appear here...";
   } else {
-    // New, clean page for dashboard card
     document.getElementById("nameInput").value = "";
     document.getElementById("descInput").value = "";
     document.getElementById("depthInput").value = "light";
@@ -1653,20 +1674,7 @@ function updateRecentContent(toolName, newContent) {
     document.getElementById("libraryView").style.display = "none";
 }
 
-function openProfile() {
-     hideAllPages();
-    document.getElementById("profileView").classList.remove("hidden");
-}
 
-function openSettings() {
-     hideAllPages();
-    document.getElementById("settingsView").classList.remove("hidden");
-}
-
-function openAbout() {
-     hideAllPages();
-    document.getElementById("aboutView").classList.remove("hidden");
-}
   function goDashboard() {
     hideAllPages();
     document.getElementById("libraryView").style.display = "block";  // Show main screen
