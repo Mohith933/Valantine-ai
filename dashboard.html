@@ -1105,7 +1105,7 @@ function saveRecent(toolName) {
   };
 
   recents.unshift(data);
-  recents = recents.slice(0, 5);
+  recents = recents.slice(0, 20);
   localStorage.setItem("recents", JSON.stringify(recents));
 }
 
