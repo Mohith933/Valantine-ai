@@ -239,10 +239,10 @@ body.dark {
       color:var(--text);  
       opacity:0.9;  
     }
-overlay {
+.overlay {
   position: fixed;
   inset: 0;
-  background: var(--bg);
+  background: rgba(0,0,0,0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -361,11 +361,10 @@ overlay {
 
   </div>
 </div>
-<div id="dobOverlay" class="overlay">
+<<div id="dobOverlay" class="overlay" style="display: none;">
   <div class="dob-box">
-    <h2>Verify Your Age</h2>
-    <p>Select your Date of Birth</p>
-    <input type="date" id="dobInput">
+    <h3>Enter your Date of Birth</h3>
+    <input type="date" id="dobInput" />
     <button id="dobSubmit">Continue</button>
   </div>
 </div>
@@ -390,8 +389,8 @@ overlay {
   
       // local storage key  
       const STORAGE_KEY = "heartnote_h1_history";  
-// Age from DOB popup earlier
 let userDOB = localStorage.getItem("heartnote_dob") || null;
+let isAdult = false;
 
 function calculateAge(dob) {
   const birth = new Date(dob);
@@ -399,22 +398,26 @@ function calculateAge(dob) {
   return Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
 }
 
-let isAdult = false;
+function showDOBOverlay() {
+  document.getElementById("dobOverlay").style.display = "flex";
 
-function checkAge() {
-  if (!userDOB) {
-    userDOB = prompt("Enter your Date of Birth (YYYY-MM-DD)");
-    if (!userDOB) return; // user cancelled
-    localStorage.setItem("heartnote_dob", userDOB);
-  }
+  document.getElementById("dobSubmit").onclick = () => {
+    const enteredDOB = document.getElementById("dobInput").value;
+    if (!enteredDOB) return;
 
+    localStorage.setItem("heartnote_dob", enteredDOB);
+    userDOB = enteredDOB;
+    validateAge();
+    document.getElementById("dobOverlay").style.display = "none";
+  };
+}
+
+function validateAge() {
   const age = calculateAge(userDOB);
   isAdult = age >= 18;
 
-  // Modes allowed for different age groups
   const childModes = ["reflection", "journal", "note", "affirmation"];
 
-  // Disable adult-only modes if under 18
   for (let option of modeEl.options) {
     if (!isAdult && !childModes.includes(option.value)) {
       option.disabled = true;
@@ -424,7 +427,11 @@ function checkAge() {
   }
 }
 
-checkAge();
+if (!userDOB) {
+  showDOBOverlay();
+} else {
+  validateAge();
+}
   
       // helpers  
       function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }  
