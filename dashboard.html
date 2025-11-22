@@ -607,11 +607,12 @@
             margin-bottom: 10px;
         }
 
-        .output {
+        ..output {
             font-family: 'Caveat', cursive;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            letter-spacing: 0.3px;
             white-space: pre-wrap;
-            font-size: 1.15rem;
-            line-height: 1.6;
             color: var(--text);
             padding:10px;
         }
@@ -1215,31 +1216,25 @@ function typeWrite(text, elementId, speed = 40) {
     el.innerHTML = "";
     let i = 0;
 
-    el.classList.add("output"); // keep handwriting font
+    el.classList.add("output");
 
-    function type() {
+    function write() {
         if (i < text.length) {
-            el.textContent += text.charAt(i);
+            el.textContent += text[i];
             i++;
 
-            let delay = speed;
+            // Natural handwriting effect: random slight variation
+            const delay = speed + Math.random() * 30;
 
-            // Natural variation in handwriting speed
-            delay += Math.random() * 35;
-
-            // Extra pause after punctuation (human-like thinking)
-            if (".,!?".includes(text.charAt(i - 1))) {
-                delay += speed * 4;
+            // Slight extra pause after punctuation or long words
+            if (".!?,".includes(text[i - 1])) {
+                setTimeout(write, delay + 120);
+            } else {
+                setTimeout(write, delay);
             }
-
-            // Smooth scrolling to bottom if long text
-            el.scrollIntoView({ behavior: "smooth", block: "end" });
-
-            setTimeout(type, delay);
         }
     }
-
-    type();
+    write();
 }
 
 
