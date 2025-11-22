@@ -238,7 +238,25 @@ body.dark {
       font-size:0.82rem;  
       color:var(--text);  
       opacity:0.9;  
-    }  
+    }
+overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+}
+
+.dob-box {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  width: 280px;
+}
   
     /* responsive */  
     @media (max-width:880px){  
@@ -343,6 +361,14 @@ body.dark {
 
   </div>
 </div>
+<div id="dobOverlay" class="overlay">
+  <div class="dob-box">
+    <h2>Verify Your Age</h2>
+    <p>Select your Date of Birth</p>
+    <input type="date" id="dobInput">
+    <button id="dobSubmit">Continue</button>
+  </div>
+</div>
   
   <script>  
     // Simple HeartNote AI h1 — client-side  
@@ -364,6 +390,41 @@ body.dark {
   
       // local storage key  
       const STORAGE_KEY = "heartnote_h1_history";  
+// Age from DOB popup earlier
+let userDOB = localStorage.getItem("heartnote_dob") || null;
+
+function calculateAge(dob) {
+  const birth = new Date(dob);
+  const diff = Date.now() - birth.getTime();
+  return Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
+}
+
+let isAdult = false;
+
+function checkAge() {
+  if (!userDOB) {
+    userDOB = prompt("Enter your Date of Birth (YYYY-MM-DD)");
+    if (!userDOB) return; // user cancelled
+    localStorage.setItem("heartnote_dob", userDOB);
+  }
+
+  const age = calculateAge(userDOB);
+  isAdult = age >= 18;
+
+  // Modes allowed for different age groups
+  const childModes = ["reflection", "journal", "note", "affirmation"];
+
+  // Disable adult-only modes if under 18
+  for (let option of modeEl.options) {
+    if (!isAdult && !childModes.includes(option.value)) {
+      option.disabled = true;
+    } else {
+      option.disabled = false;
+    }
+  }
+}
+
+checkAge();
   
       // helpers  
       function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }  
